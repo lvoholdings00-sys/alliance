@@ -21,293 +21,194 @@
       --accent-dark: #26215C;
     }
     html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      overflow-x: hidden;
-    }
+    body { background: var(--bg); color: var(--white); font-family: 'Cormorant Garamond', Georgia, serif; overflow-x: hidden; }
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.03;
-      pointer-events: none;
-      z-index: 9999;
+      opacity: 0.03; pointer-events: none; z-index: 9999;
     }
-    .page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    .page { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
 
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.8rem 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(to bottom, rgba(5,5,5,0.96) 0%, transparent 100%);
-    }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.8rem 4rem; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(5,5,5,0.96) 0%, transparent 100%); }
     .nav-left { display: flex; flex-direction: column; gap: 0.2rem; }
-    .nav-parent {
-      font-family: 'Cinzel', serif;
-      font-size: 0.48rem;
-      letter-spacing: 0.35em;
-      color: var(--red-hi);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
+    .nav-parent { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.35em; color: var(--red-hi); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
     .nav-parent:hover { color: var(--chrome); }
-    .nav-mark {
-      font-family: 'Cinzel', serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .nav-tag {
-      font-family: 'Cinzel', serif;
-      font-size: 0.52rem;
-      letter-spacing: 0.25em;
-      color: var(--dim);
-      text-transform: uppercase;
-    }
+    .nav-mark { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.3em; color: var(--accent); text-decoration: none; }
+    .nav-tag { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.25em; color: var(--dim); text-transform: uppercase; }
 
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 7rem 2rem 4rem;
-      position: relative;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(600px, 90vw);
-      height: min(600px, 90vw);
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(127,119,221,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-label {
-      font-family: 'Cinzel', serif;
-      font-size: 0.52rem;
-      letter-spacing: 0.5em;
-      color: var(--red-hi);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
-    }
-    .hero-title {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(2.2rem, 8vw, 5rem);
-      font-weight: 900;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-      opacity: 0;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
-    }
-    .hero-sub {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(0.48rem, 1.5vw, 0.65rem);
-      letter-spacing: 0.4em;
-      color: var(--dim);
-      text-transform: uppercase;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.7s forwards;
-    }
-    .hero-statement {
-      font-size: clamp(1rem, 3vw, 1.5rem);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.8;
-      color: var(--white);
-      opacity: 0;
-      max-width: 600px;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.9s forwards;
-    }
-    .hero-rule {
-      width: 1px; height: 60px;
-      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-      margin: 3rem auto 0;
-      opacity: 0;
-      animation: fadeIn 1s ease 1.4s forwards;
-    }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 7rem 2rem 4rem; position: relative; }
+    .hero::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(600px, 90vw); height: min(600px, 90vw); border-radius: 50%; background: radial-gradient(circle, rgba(127,119,221,0.08) 0%, transparent 70%); pointer-events: none; }
+    .hero-label { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.5em; color: var(--red-hi); text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.3s forwards; }
+    .hero-title { font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 8vw, 5rem); font-weight: 900; letter-spacing: 0.2em; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.5s forwards; }
+    .hero-sub { font-family: 'Cinzel', serif; font-size: clamp(0.48rem, 1.5vw, 0.65rem); letter-spacing: 0.4em; color: var(--dim); text-transform: uppercase; margin-bottom: 3rem; opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.7s forwards; }
+    .hero-statement { font-size: clamp(1rem, 3vw, 1.5rem); font-weight: 300; font-style: italic; line-height: 1.8; color: var(--white); opacity: 0; max-width: 600px; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.9s forwards; }
+    .hero-rule { width: 1px; height: 60px; background: linear-gradient(to bottom, transparent, var(--accent), transparent); margin: 3rem auto 0; opacity: 0; animation: fadeIn 1s ease 1.4s forwards; }
 
-    .section-divider {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 0 2rem;
-      margin: 5rem auto;
-      max-width: 900px;
-      width: 100%;
-    }
-    .section-divider::before,
-    .section-divider::after {
-      content: '';
-      flex: 1;
-      height: 0.5px;
-      background: linear-gradient(to right, transparent, var(--accent) 40%, transparent);
-    }
-    .section-divider span {
-      font-family: 'Cinzel', serif;
-      font-size: 0.55rem;
-      letter-spacing: 0.4em;
-      color: var(--accent);
-      white-space: nowrap;
-    }
+    .section-divider { display: flex; align-items: center; gap: 1.5rem; padding: 0 2rem; margin: 5rem auto; max-width: 900px; width: 100%; }
+    .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 0.5px; background: linear-gradient(to right, transparent, var(--accent) 40%, transparent); }
+    .section-divider span { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.4em; color: var(--accent); white-space: nowrap; }
 
-    .pillars {
-      padding: 0 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .pillars-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      border: 0.5px solid rgba(127,119,221,0.2);
-    }
-    .pillar {
-      padding: 3rem 2rem;
-      border-right: 0.5px solid rgba(127,119,221,0.12);
-      position: relative;
-      overflow: hidden;
-      transition: background 0.4s;
-    }
+    .pillars { padding: 0 2rem; max-width: 1100px; margin: 0 auto; width: 100%; }
+    .pillars-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); border: 0.5px solid rgba(127,119,221,0.2); }
+    .pillar { padding: 3rem 2rem; border-right: 0.5px solid rgba(127,119,221,0.12); position: relative; overflow: hidden; transition: background 0.4s; }
     .pillar:last-child { border-right: none; }
-    .pillar::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--accent), transparent);
-      transform: scaleX(0);
-      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-    }
+    .pillar::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--accent), transparent); transform: scaleX(0); transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
     .pillar:hover { background: rgba(127,119,221,0.03); }
     .pillar:hover::before { transform: scaleX(1); }
-    .pillar-icon {
-      font-family: 'Cinzel', serif;
-      font-size: 0.5rem;
-      letter-spacing: 0.3em;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      display: block;
-      opacity: 0.7;
-    }
-    .pillar-title {
-      font-family: 'Cinzel', serif;
-      font-size: 0.88rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      color: var(--chrome);
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-    }
-    .pillar-text {
-      font-size: 0.92rem;
-      font-weight: 300;
-      line-height: 1.9;
-      color: var(--dim);
-      font-style: italic;
-    }
+    .pillar-icon { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.3em; color: var(--accent); margin-bottom: 1.5rem; display: block; opacity: 0.7; }
+    .pillar-title { font-family: 'Cinzel', serif; font-size: 0.88rem; font-weight: 600; letter-spacing: 0.18em; color: var(--chrome); margin-bottom: 1rem; text-transform: uppercase; }
+    .pillar-text { font-size: 0.92rem; font-weight: 300; line-height: 1.9; color: var(--dim); font-style: italic; }
 
-    /* TIERS */
-    .tiers {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 2rem 7rem;
+    .tiers { max-width: 800px; margin: 0 auto; padding: 0 2rem 7rem; width: 100%; }
+    .tier { display: flex; align-items: flex-start; gap: 2rem; padding: 2.5rem 0; border-bottom: 0.5px solid rgba(127,119,221,0.1); }
+    .tier:last-child { border-bottom: none; }
+    .tier-num { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.3em; color: var(--accent); min-width: 48px; padding-top: 0.2rem; }
+    .tier-title { font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.2em; color: var(--chrome); margin-bottom: 0.6rem; text-transform: uppercase; }
+    .tier-text { font-size: 0.92rem; font-weight: 300; font-style: italic; line-height: 1.9; color: var(--dim); }
+
+    /* ─── INVESTOR PORTAL ─── */
+    .portal-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 8rem; width: 100%; }
+
+    /* SHARED FORM STYLES */
+    .portal-panel { border: 0.5px solid rgba(127,119,221,0.25); padding: 4rem 3rem; position: relative; }
+    .portal-panel::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 1px; background: linear-gradient(to right, transparent, var(--accent), transparent); }
+    .portal-title { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.4em; color: var(--accent); text-transform: uppercase; margin-bottom: 0.6rem; text-align: center; }
+    .portal-sub { font-size: 0.88rem; font-weight: 300; font-style: italic; color: var(--dim); text-align: center; margin-bottom: 2.5rem; line-height: 1.7; }
+    .portal-form { display: flex; flex-direction: column; gap: 1rem; max-width: 420px; margin: 0 auto; }
+    .portal-input {
+      background: transparent;
+      border: 0.5px solid rgba(127,119,221,0.3);
+      color: var(--white);
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      padding: 1rem 1.2rem;
+      outline: none;
+      transition: border-color 0.3s;
       width: 100%;
     }
-    .tier {
-      display: flex;
-      align-items: flex-start;
-      gap: 2rem;
-      padding: 2.5rem 0;
-      border-bottom: 0.5px solid rgba(127,119,221,0.1);
-    }
-    .tier:last-child { border-bottom: none; }
-    .tier-num {
-      font-family: 'Cinzel', serif;
-      font-size: 0.5rem;
-      letter-spacing: 0.3em;
+    .portal-input::placeholder { color: var(--dim); }
+    .portal-input:focus { border-color: var(--accent); }
+    .portal-btn {
+      background: transparent;
+      border: 0.5px solid var(--accent);
       color: var(--accent);
-      min-width: 48px;
-      padding-top: 0.2rem;
-    }
-    .tier-content {}
-    .tier-title {
       font-family: 'Cinzel', serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      color: var(--chrome);
-      margin-bottom: 0.6rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.4em;
+      padding: 1rem;
+      cursor: pointer;
       text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+      margin-top: 0.5rem;
     }
-    .tier-text {
-      font-size: 0.92rem;
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.9;
+    .portal-btn:hover { background: var(--accent); color: var(--bg); }
+    .portal-btn.secondary {
+      border-color: rgba(127,119,221,0.3);
       color: var(--dim);
     }
-
-    footer {
-      border-top: 0.5px solid rgba(127,119,221,0.15);
-      padding: 2.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-top: auto;
-    }
-    .footer-back {
-      font-family: 'Cinzel', serif;
-      font-size: 0.52rem;
-      letter-spacing: 0.3em;
-      color: var(--dim);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-    .footer-back:hover { color: var(--accent); }
-    .footer-copy {
+    .portal-btn.secondary:hover { background: rgba(127,119,221,0.1); color: var(--accent); border-color: var(--accent); }
+    .portal-toggle { text-align: center; margin-top: 1.2rem; }
+    .portal-toggle-link {
       font-family: 'Cinzel', serif;
       font-size: 0.48rem;
-      letter-spacing: 0.15em;
-      color: rgba(136,136,128,0.35);
+      letter-spacing: 0.25em;
+      color: var(--dim);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.3s;
     }
+    .portal-toggle-link:hover { color: var(--accent); }
+    .portal-error { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.2em; color: var(--red-hi); display: none; text-align: center; margin-top: 0.4rem; }
+    .portal-error.show { display: block; }
+    .portal-success { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.2em; color: var(--accent); display: none; text-align: center; margin-top: 0.4rem; }
+    .portal-success.show { display: block; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* TERMS MODAL */
+    .terms-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(5,5,5,0.92);
+      align-items: center; justify-content: center;
+      padding: 2rem;
     }
+    .terms-overlay.open { display: flex; }
+    .terms-box {
+      border: 0.5px solid rgba(127,119,221,0.35);
+      max-width: 640px; width: 100%;
+      max-height: 80vh;
+      display: flex; flex-direction: column;
+      position: relative;
+    }
+    .terms-box::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 1px; background: linear-gradient(to right, transparent, var(--accent), transparent); }
+    .terms-header { padding: 2rem 2.5rem 1.2rem; border-bottom: 0.5px solid rgba(127,119,221,0.15); }
+    .terms-header-title { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.35em; color: var(--accent); text-transform: uppercase; }
+    .terms-body { padding: 2rem 2.5rem; overflow-y: auto; flex: 1; }
+    .terms-body::-webkit-scrollbar { width: 3px; }
+    .terms-body::-webkit-scrollbar-track { background: transparent; }
+    .terms-body::-webkit-scrollbar-thumb { background: rgba(127,119,221,0.3); }
+    .terms-section { margin-bottom: 1.8rem; }
+    .terms-section-title { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.3em; color: var(--chrome); text-transform: uppercase; margin-bottom: 0.7rem; }
+    .terms-text { font-size: 0.85rem; font-weight: 300; font-style: italic; line-height: 1.9; color: var(--dim); }
+    .terms-footer { padding: 1.5rem 2.5rem; border-top: 0.5px solid rgba(127,119,221,0.15); display: flex; gap: 1rem; }
+    .terms-accept { flex: 1; background: transparent; border: 0.5px solid var(--accent); color: var(--accent); font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.35em; padding: 0.9rem; cursor: pointer; text-transform: uppercase; transition: background 0.3s, color 0.3s; }
+    .terms-accept:hover { background: var(--accent); color: var(--bg); }
+    .terms-decline { background: transparent; border: 0.5px solid rgba(127,119,221,0.2); color: var(--dim); font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.3em; padding: 0.9rem 1.5rem; cursor: pointer; text-transform: uppercase; transition: color 0.3s; }
+    .terms-decline:hover { color: var(--red-hi); border-color: rgba(139,0,0,0.4); }
+
+    /* DASHBOARD */
+    .portal-dashboard { display: none; }
+    .portal-dashboard.visible { display: block; }
+
+    .dash-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 2rem 0; border-bottom: 0.5px solid rgba(127,119,221,0.2);
+      margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .dash-welcome { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; }
+    .dash-name { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.2em; color: var(--chrome); margin-top: 0.3rem; }
+    .dash-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .dash-logout { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.3em; color: var(--dim); background: none; border: none; cursor: pointer; text-transform: uppercase; transition: color 0.3s; }
+    .dash-logout:hover { color: var(--red-hi); }
+
+    /* TIER BADGE */
+    .tier-badge-wrap { margin-bottom: 3rem; }
+    .tier-badge {
+      display: inline-flex; align-items: center; gap: 1.5rem;
+      border: 0.5px solid rgba(127,119,221,0.3);
+      padding: 1.5rem 2rem;
+    }
+    .tier-badge-label { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.3em; color: var(--dim); text-transform: uppercase; }
+    .tier-badge-value { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--accent); }
+    .tier-badge-note { font-size: 0.82rem; font-style: italic; color: var(--dim); }
+
+    /* INFO GRID */
+    .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(127,119,221,0.12); border: 0.5px solid rgba(127,119,221,0.2); margin-bottom: 3rem; }
+    .dash-cell { background: var(--bg); padding: 2rem 1.8rem; }
+    .dash-cell-label { font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.35em; color: var(--dim); text-transform: uppercase; margin-bottom: 0.6rem; }
+    .dash-cell-value { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.15em; color: var(--chrome); }
+
+    /* UPDATES FEED */
+    .updates-title { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.4em; color: var(--dim); text-transform: uppercase; margin-bottom: 1.2rem; }
+    .update-item { padding: 1.5rem 0; border-bottom: 0.5px solid rgba(127,119,221,0.1); }
+    .update-item:last-child { border-bottom: none; }
+    .update-date { font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.2em; color: var(--dim); margin-bottom: 0.4rem; }
+    .update-text { font-size: 0.88rem; font-weight: 300; font-style: italic; line-height: 1.8; color: var(--chrome); }
+
+    /* LOCKED NOTICE */
+    .locked-notice { border: 0.5px solid rgba(127,119,221,0.15); padding: 2rem; text-align: center; margin-top: 2rem; }
+    .locked-notice p { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.28em; color: var(--dim); text-transform: uppercase; line-height: 1.8; }
+    .locked-notice span { color: var(--red-hi); }
+
+    footer { border-top: 0.5px solid rgba(127,119,221,0.15); padding: 2.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-top: auto; }
+    .footer-back { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.3em; color: var(--dim); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+    .footer-back:hover { color: var(--accent); }
+    .footer-copy { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.15em; color: rgba(136,136,128,0.35); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .reveal {
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
-    }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 600px) {
@@ -319,6 +220,9 @@
       .pillar:last-child { border-bottom: none; }
       .tiers { padding: 0 1.2rem 5rem; }
       .tier { gap: 1.2rem; }
+      .portal-panel { padding: 2.5rem 1.5rem; }
+      .dash-grid { grid-template-columns: 1fr; }
+      .terms-body { padding: 1.5rem; }
       footer { flex-direction: column; align-items: center; text-align: center; padding: 2rem 1.2rem; }
     }
     @media (min-width: 601px) and (max-width: 900px) {
@@ -398,17 +302,296 @@
       </div>
     </section>
 
+    <div class="section-divider reveal"><span>Investor Portal</span></div>
+
+    <section class="portal-wrap reveal">
+
+      <!-- LOGIN VIEW -->
+      <div id="portalLogin">
+        <div class="portal-panel">
+          <p class="portal-title">Alliance Portal Access</p>
+          <p class="portal-sub">Enter your credentials to access the investor dashboard.<br/>New to LVO Alliance? <span class="portal-toggle-link" onclick="showRegister()">Request Access →</span></p>
+          <div class="portal-form">
+            <input class="portal-input" type="email" id="loginEmail" placeholder="EMAIL ADDRESS" autocomplete="off"/>
+            <input class="portal-input" type="password" id="loginPass" placeholder="PASSWORD"/>
+            <button class="portal-btn" onclick="portalLogin()">Enter Portal</button>
+            <p class="portal-error" id="loginError">Invalid credentials. Contact LVO Alliance.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div id="portalRegister" style="display:none;">
+        <div class="portal-panel">
+          <p class="portal-title">Request Alliance Access</p>
+          <p class="portal-sub">All new accounts begin at Tier I. Advancement is reviewed<br/>and updated directly by LVO Holdings administration.</p>
+          <div class="portal-form">
+            <input class="portal-input" type="text" id="regName" placeholder="FULL LEGAL NAME" autocomplete="off"/>
+            <input class="portal-input" type="email" id="regEmail" placeholder="EMAIL ADDRESS" autocomplete="off"/>
+            <input class="portal-input" type="text" id="regPhone" placeholder="PHONE NUMBER"/>
+            <input class="portal-input" type="text" id="regRole" placeholder="PROFESSIONAL ROLE / COMPANY"/>
+            <input class="portal-input" type="password" id="regPass" placeholder="CREATE PASSWORD"/>
+            <input class="portal-input" type="password" id="regPass2" placeholder="CONFIRM PASSWORD"/>
+            <button class="portal-btn" onclick="openTerms()">Review Terms &amp; Submit</button>
+            <p class="portal-error" id="regError"></p>
+            <p class="portal-success" id="regSuccess"></p>
+          </div>
+          <div class="portal-toggle">
+            <span class="portal-toggle-link" onclick="showLogin()">← Back to Login</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD VIEW -->
+      <div id="portalDash" class="portal-dashboard">
+        <div class="dash-header">
+          <div>
+            <p class="dash-welcome">Welcome Back</p>
+            <p class="dash-name" id="dashName">—</p>
+          </div>
+          <div class="dash-actions">
+            <button class="dash-logout" onclick="portalLogout()">Sign Out ×</button>
+          </div>
+        </div>
+
+        <!-- TIER BADGE -->
+        <div class="tier-badge-wrap">
+          <div class="tier-badge">
+            <div>
+              <p class="tier-badge-label">Current Standing</p>
+              <p class="tier-badge-value" id="dashTier">Tier I — Principal</p>
+            </div>
+            <p class="tier-badge-note">Tier advancement is reviewed by LVO Holdings administration.</p>
+          </div>
+        </div>
+
+        <!-- ACCOUNT INFO -->
+        <div class="dash-grid">
+          <div class="dash-cell">
+            <p class="dash-cell-label">Member Email</p>
+            <p class="dash-cell-value" id="dashEmail">—</p>
+          </div>
+          <div class="dash-cell">
+            <p class="dash-cell-label">Member Since</p>
+            <p class="dash-cell-value" id="dashJoined">—</p>
+          </div>
+          <div class="dash-cell">
+            <p class="dash-cell-label">Role / Organization</p>
+            <p class="dash-cell-value" id="dashRole">—</p>
+          </div>
+          <div class="dash-cell">
+            <p class="dash-cell-label">Account Status</p>
+            <p class="dash-cell-value">Active</p>
+          </div>
+        </div>
+
+        <!-- UPDATES FEED -->
+        <p class="updates-title">LVO Alliance Updates</p>
+        <div class="update-item">
+          <p class="update-date">April 2026</p>
+          <p class="update-text">Welcome to LVO Alliance. Your account has been created and is currently at Tier I. Deal flow access and equity participation are unlocked at higher tiers — tier upgrades are granted directly by LVO Holdings administration based on your involvement and performance.</p>
+        </div>
+        <div class="update-item">
+          <p class="update-date">Ongoing</p>
+          <p class="update-text">To discuss active deals, co-investment opportunities, or to introduce a referral into the LVO network — reach out directly via wearelvo.com. All communications are handled in confidence.</p>
+        </div>
+
+        <!-- LOCKED CONTENT NOTICE -->
+        <div class="locked-notice">
+          <p>Deal Flow · Equity Statements · Capital Reports<br/><span>Access Restricted</span> · Unlocked at Tier II and above</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TERMS MODAL -->
+    <div class="terms-overlay" id="termsOverlay">
+      <div class="terms-box">
+        <div class="terms-header">
+          <p class="terms-header-title">LVO Alliance · Terms of Access</p>
+        </div>
+        <div class="terms-body">
+          <div class="terms-section">
+            <p class="terms-section-title">I. Confidentiality</p>
+            <p class="terms-text">All information made available through the LVO Alliance portal — including deal flow, equity structures, partner identities, capital positions, and operational data — is strictly confidential. By creating an account, you agree not to disclose, reproduce, or transmit any portal content to any third party without prior written authorization from LVO Holdings.</p>
+          </div>
+          <div class="terms-section">
+            <p class="terms-section-title">II. Access & Tier Assignment</p>
+            <p class="terms-text">All new accounts are assigned Tier I standing upon creation. Tier advancement is not automatic and is determined solely at the discretion of LVO Holdings administration. Tier II (Partner) and Tier III (Associate) access is unlocked based on demonstrated performance, capital contribution, and ongoing relationship with LVO Holdings. You may not represent your tier standing to external parties without written confirmation from LVO Holdings.</p>
+          </div>
+          <div class="terms-section">
+            <p class="terms-section-title">III. No Investment Solicitation</p>
+            <p class="terms-text">Access to this portal does not constitute an offer or solicitation to invest. Any co-investment opportunities presented through the portal are for informational purposes only and are subject to separate binding agreements. LVO Holdings makes no representation of guaranteed returns on any investment vehicle discussed herein.</p>
+          </div>
+          <div class="terms-section">
+            <p class="terms-section-title">IV. Account Security</p>
+            <p class="terms-text">You are solely responsible for maintaining the security of your login credentials. You agree not to share your access credentials with any other individual. LVO Holdings reserves the right to suspend or revoke access at any time without notice if unauthorized use is suspected.</p>
+          </div>
+          <div class="terms-section">
+            <p class="terms-section-title">V. Governing Terms</p>
+            <p class="terms-text">These terms are governed by the laws of the State of Texas. Any disputes arising from portal access or account activity shall be resolved under the jurisdiction of Harris County, Texas. LVO Holdings reserves the right to amend these terms at any time, with continued portal access constituting acceptance of the revised terms.</p>
+          </div>
+        </div>
+        <div class="terms-footer">
+          <button class="terms-accept" onclick="acceptTerms()">I Accept — Create Account</button>
+          <button class="terms-decline" onclick="closeTerms()">Decline</button>
+        </div>
+      </div>
+    </div>
+
     <footer>
       <a class="footer-back" href="https://wearelvo.com">← wearelvo.com</a>
       <span class="footer-copy">&copy; 2026 LVO Holdings · All Rights Reserved</span>
     </footer>
   </div>
+
   <script>
+    // ─── REVEAL ───
     const reveals = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.08 });
     reveals.forEach(r => obs.observe(r));
+
+    // ─── LOCAL STORAGE USER DB ───
+    // NOTE: Replace with a real backend/auth system for production.
+    function getUsers() { try { return JSON.parse(localStorage.getItem('lvo_users') || '{}'); } catch(e) { return {}; } }
+    function saveUsers(u) { localStorage.setItem('lvo_users', JSON.stringify(u)); }
+    function getSession() { try { return JSON.parse(localStorage.getItem('lvo_session') || 'null'); } catch(e) { return null; } }
+    function saveSession(s) { localStorage.setItem('lvo_session', JSON.stringify(s)); }
+    function clearSession() { localStorage.removeItem('lvo_session'); }
+
+    // ─── VIEWS ───
+    function showLogin() {
+      document.getElementById('portalLogin').style.display = 'block';
+      document.getElementById('portalRegister').style.display = 'none';
+      document.getElementById('portalDash').classList.remove('visible');
+    }
+    function showRegister() {
+      document.getElementById('portalLogin').style.display = 'none';
+      document.getElementById('portalRegister').style.display = 'block';
+    }
+    function showDash(user) {
+      document.getElementById('portalLogin').style.display = 'none';
+      document.getElementById('portalRegister').style.display = 'none';
+      document.getElementById('portalDash').classList.add('visible');
+      document.getElementById('dashName').textContent = user.name;
+      document.getElementById('dashEmail').textContent = user.email;
+      document.getElementById('dashRole').textContent = user.role || '—';
+      document.getElementById('dashJoined').textContent = user.joined || '—';
+      const tierLabels = { 1: 'Tier I — Principal', 2: 'Tier II — Partner', 3: 'Tier III — Associate' };
+      document.getElementById('dashTier').textContent = tierLabels[user.tier] || 'Tier I — Principal';
+    }
+
+    // ─── LOGIN ───
+    function portalLogin() {
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const pass  = document.getElementById('loginPass').value.trim();
+      const err   = document.getElementById('loginError');
+      const users = getUsers();
+      const user  = users[email];
+      if (user && user.password === btoa(pass)) {
+        saveSession(email);
+        err.classList.remove('show');
+        showDash(user);
+      } else {
+        err.classList.add('show');
+      }
+    }
+
+    function portalLogout() {
+      clearSession();
+      showLogin();
+    }
+
+    // ─── REGISTER VALIDATION ───
+    function openTerms() {
+      const name  = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim().toLowerCase();
+      const phone = document.getElementById('regPhone').value.trim();
+      const role  = document.getElementById('regRole').value.trim();
+      const pass  = document.getElementById('regPass').value.trim();
+      const pass2 = document.getElementById('regPass2').value.trim();
+      const err   = document.getElementById('regError');
+
+      if (!name || !email || !phone || !role || !pass) {
+        err.textContent = 'All fields are required.';
+        err.classList.add('show');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        err.textContent = 'Enter a valid email address.';
+        err.classList.add('show');
+        return;
+      }
+      if (pass.length < 8) {
+        err.textContent = 'Password must be at least 8 characters.';
+        err.classList.add('show');
+        return;
+      }
+      if (pass !== pass2) {
+        err.textContent = 'Passwords do not match.';
+        err.classList.add('show');
+        return;
+      }
+      const users = getUsers();
+      if (users[email]) {
+        err.textContent = 'An account with this email already exists.';
+        err.classList.add('show');
+        return;
+      }
+      err.classList.remove('show');
+      document.getElementById('termsOverlay').classList.add('open');
+    }
+
+    function closeTerms() {
+      document.getElementById('termsOverlay').classList.remove('open');
+    }
+
+    function acceptTerms() {
+      const name  = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim().toLowerCase();
+      const phone = document.getElementById('regPhone').value.trim();
+      const role  = document.getElementById('regRole').value.trim();
+      const pass  = document.getElementById('regPass').value.trim();
+
+      const users = getUsers();
+      const now   = new Date();
+      const joined = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+      users[email] = {
+        name, email, phone, role,
+        password: btoa(pass),
+        tier: 1,
+        joined,
+      };
+      saveUsers(users);
+      saveSession(email);
+      closeTerms();
+
+      document.getElementById('regSuccess').textContent = 'Account created. Welcome to LVO Alliance.';
+      document.getElementById('regSuccess').classList.add('show');
+
+      setTimeout(() => {
+        document.getElementById('regSuccess').classList.remove('show');
+        showDash(users[email]);
+      }, 1600);
+    }
+
+    // ─── KEYBOARD SUPPORT ───
+    ['loginEmail','loginPass'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') portalLogin(); });
+    });
+
+    // ─── AUTO-RESTORE SESSION ───
+    (function() {
+      const session = getSession();
+      if (session) {
+        const users = getUsers();
+        const user  = users[session];
+        if (user) { showDash(user); return; }
+      }
+    })();
   </script>
 </body>
 </html>
