@@ -354,6 +354,29 @@
       .pillar:last-child{border-bottom:none}
       #portalGate{max-width:100%}
     }
+    /* Direct fix for the Chat layout & Black Box */
+#chatMessages {
+    flex-grow: 1;
+    overflow-y: auto;
+    height: 400px !important; 
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.chat-compose {
+    display: flex;
+    padding: 10px;
+    background: #000;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#chatInput {
+    background: transparent;
+    border: 1px solid #333;
+    color: white;
+    padding: 10px;
+    flex-grow: 1;
+}
   </style>
 </head>
 <body>
