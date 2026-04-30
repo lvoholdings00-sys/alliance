@@ -584,8 +584,11 @@ function getTier(uid){return getMeta(uid)?.tier||4}
 
 // ─── DEALS ───
 function getDeals(uid){
-  // Deals are stored per-user in localStorage under lvo_deals_<uid>
-  // Admins can add deals to any user via the admin panel
+  // Fetch deals directly from the specific user's Clerk publicMetadata
+  if (window._clerkUser && window._clerkUser.id === uid && window._clerkUser.publicMetadata?.active_deals) {
+      return window._clerkUser.publicMetadata.active_deals;
+  }
+  // Fallback if metadata is empty
   try{return JSON.parse(localStorage.getItem('lvo_deals_'+uid)||'[]')}catch(e){return[]}
 }
 
