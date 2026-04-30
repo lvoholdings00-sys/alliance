@@ -76,30 +76,12 @@
     /* PORTAL */
     .portal-wrap{max-width:960px;margin:0 auto;padding:0 2rem 8rem;width:100%}
 
-    /* ── FIX 1: SIGN-IN GATE — centered, constrained width ── */
-    #portalGate{
-      border:.5px solid rgba(127,119,221,.25);
-      padding:4rem 3rem;
-      position:relative;
-      text-align:center;
-      max-width:480px;      /* constrain width on desktop */
-      margin:0 auto;        /* center horizontally */
-    }
+    #portalGate{border:.5px solid rgba(127,119,221,.25);padding:4rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
     #portalGate::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
     .gate-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.8rem}
     .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.7}
-
-    /* ── FIX 2: Clerk sign-in container — centered, full width of gate ── */
-    #clerk-sign-in{
-      display:flex;
-      justify-content:center;
-      width:100%;
-    }
-    /* Force Clerk card to fill container and not overflow on mobile */
-    #clerk-sign-in > * {
-      width:100% !important;
-      max-width:100% !important;
-    }
+    #clerk-sign-in{display:flex;justify-content:center;width:100%}
+    #clerk-sign-in > *{width:100% !important;max-width:100% !important}
 
     /* ONBOARDING */
     #onboardingOverlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(5,5,5,.96);align-items:center;justify-content:center;padding:2rem}
@@ -116,7 +98,7 @@
     .division-btn span{display:block;font-size:.78rem;color:var(--chrome);margin-bottom:.3rem;letter-spacing:.15em}
     .division-btn:hover,.division-btn.selected{border-color:var(--accent);background:rgba(127,119,221,.06);color:var(--accent)}
     .division-btn.selected span{color:var(--accent)}
-    .onboard-input{background:transparent;border:.5px solid rgba(127,119,221,.3);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.95rem;letter-spacing:.05em;padding:1rem 1.2rem;outline:none;transition:border-color .3s;width:100%;margin-bottom:1.5rem;text-transform:none}
+    .onboard-input{background:transparent;border:.5px solid rgba(127,119,221,.3);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.95rem;letter-spacing:.05em;padding:1rem 1.2rem;outline:none;transition:border-color .3s;width:100%;margin-bottom:1.5rem}
     .onboard-input::placeholder{color:var(--dim);font-style:italic}
     .onboard-input:focus{border-color:var(--accent)}
     .onboard-submit{background:transparent;border:.5px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.4em;padding:1rem;cursor:pointer;text-transform:uppercase;transition:background .3s,color .3s;width:100%}
@@ -157,7 +139,6 @@
     .tier-badge-value{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.2em;color:var(--accent)}
     .tier-badge-note{font-size:.85rem;font-style:italic;color:var(--dim);max-width:300px;line-height:1.6}
 
-    /* SECTION LABEL */
     .section-label{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.4em;color:var(--dim);text-transform:uppercase;margin-bottom:1.2rem}
 
     /* LOG */
@@ -167,14 +148,12 @@
     .log-date{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.2em;color:var(--dim);margin-bottom:.3rem}
     .log-text{font-size:.88rem;font-weight:300;font-style:italic;line-height:1.7;color:var(--chrome)}
 
-    /* ── FIX 3: LOCKED NOTICE — only shows for Tier IV ── */
-    .locked-notice{border:.5px solid rgba(127,119,221,.15);padding:2rem;text-align:center;margin-bottom:2rem}
-    .locked-notice p{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;line-height:1.8}
-    .locked-notice span{color:var(--red-hi)}
-    /* hidden by default, shown via JS only for tier 4 */
-    #lockedNotice{display:none}
+    /* LOCKED NOTICE */
+    #lockedNotice{display:none;border:.5px solid rgba(127,119,221,.15);padding:2rem;text-align:center;margin-bottom:2rem}
+    #lockedNotice p{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;line-height:1.8}
+    #lockedNotice span{color:var(--red-hi)}
 
-    /* ── ACTIVE DEALS SECTION ── */
+    /* DEALS */
     .deals-section{margin-bottom:3rem}
     .deals-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
     .deals-header .section-label{margin-bottom:0}
@@ -185,15 +164,53 @@
     .deal-card:hover::before{transform:scaleX(1)}
     .deal-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.8rem;flex-wrap:wrap}
     .deal-name{font-family:'Cinzel',serif;font-size:.75rem;font-weight:600;letter-spacing:.15em;color:var(--chrome);text-transform:uppercase}
-    .deal-status{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.2em;text-transform:uppercase;padding:.2rem .6rem;border-radius:2px}
+    .deal-status{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.2em;text-transform:uppercase;padding:.25rem .65rem}
     .deal-status.active{color:#16a34a;border:.5px solid rgba(22,163,74,.35);background:rgba(22,163,74,.05)}
     .deal-status.pending{color:var(--gold);border:.5px solid rgba(200,169,110,.35);background:rgba(200,169,110,.05)}
-    .deal-status.closed{color:var(--dim);border:.5px solid rgba(136,136,128,.25);background:transparent}
+    .deal-status.closed{color:var(--dim);border:.5px solid rgba(136,136,128,.25)}
     .deal-meta{display:flex;gap:2rem;flex-wrap:wrap}
-    .deal-meta-item{}
     .deal-meta-label{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:.2rem}
     .deal-meta-value{font-size:.85rem;font-style:italic;color:var(--chrome)}
     .deal-note{margin-top:.8rem;font-size:.82rem;font-style:italic;color:var(--dim);line-height:1.6;border-top:.5px solid rgba(127,119,221,.08);padding-top:.8rem}
+
+    /* VIEW ALL BUTTON */
+    .view-all-btn{
+      background:transparent;
+      border:.5px solid rgba(127,119,221,.35);
+      color:var(--accent);
+      font-family:'Cinzel',serif;
+      font-size:.48rem;
+      letter-spacing:.25em;
+      padding:.6rem 1.1rem;
+      cursor:pointer;
+      text-transform:uppercase;
+      transition:background .25s,border-color .25s;
+      /* ensure it's always clickable */
+      position:relative;
+      z-index:1;
+    }
+    .view-all-btn:hover{background:rgba(127,119,221,.12);border-color:var(--accent)}
+
+    /* DEALS MODAL */
+    #dealsModal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:400;
+      background:rgba(5,5,5,.96);
+      align-items:flex-start;
+      justify-content:center;
+      padding:2rem;
+      overflow-y:auto;
+    }
+    #dealsModal.open{display:flex}
+    .deals-modal-inner{border:.5px solid rgba(127,119,221,.35);max-width:700px;width:100%;position:relative;margin-top:5rem}
+    .deals-modal-inner::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
+    .deals-modal-header{padding:2.5rem 2.5rem 1.5rem;border-bottom:.5px solid rgba(127,119,221,.15);display:flex;justify-content:space-between;align-items:center}
+    .deals-modal-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase}
+    .deals-modal-close{background:none;border:none;color:var(--dim);font-family:'Cinzel',serif;font-size:.7rem;cursor:pointer;transition:color .2s;line-height:1}
+    .deals-modal-close:hover{color:var(--red-hi)}
+    .deals-modal-body{padding:2rem 2.5rem}
 
     /* ADMIN */
     .admin-section{margin-bottom:3rem}
@@ -240,42 +257,24 @@
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
     .reveal.visible{opacity:1;transform:translateY(0)}
 
-    /* ── FIX 4: Clerk appearance overrides for font ── */
-    /* Force Clerk inputs to use a readable non-caps font */
-    .cl-formFieldInput,
-    .cl-formFieldInputShowPasswordButton,
-    [data-clerk-input],
-    input.cl-formFieldInput {
-      font-family: 'Cormorant Garamond', Georgia, serif !important;
-      font-size: 1rem !important;
-      letter-spacing: 0.04em !important;
-      text-transform: none !important;
-      font-variant: normal !important;
+    .cl-formFieldInput,[data-clerk-input],input.cl-formFieldInput{
+      font-family:'Cormorant Garamond',Georgia,serif !important;
+      font-size:1rem !important;letter-spacing:.04em !important;
+      text-transform:none !important;font-variant:normal !important;
     }
 
     @media(max-width:600px){
-      nav{padding:1.2rem}
-      .nav-tag{display:none}
+      nav{padding:1.2rem}.nav-tag{display:none}
       .pillars{padding:0 1.2rem}
       .pillars-grid{grid-template-columns:1fr}
       .pillar{border-right:none;border-bottom:.5px solid rgba(127,119,221,.12)}
       .pillar:last-child{border-bottom:none}
-      .tiers{padding:0 1.2rem 5rem}
-      .tier{gap:1.2rem}
-      /* ── FIX 5: Mobile gate — full width, smaller padding ── */
-      #portalGate{
-        max-width:100%;
-        padding:2rem 1.2rem;
-        margin:0;
-        border-left:none;
-        border-right:none;
-      }
+      .tiers{padding:0 1.2rem 5rem}.tier{gap:1.2rem}
+      #portalGate{max-width:100%;padding:2rem 1.2rem;margin:0;border-left:none;border-right:none}
       .info-grid,.admin-grid{grid-template-columns:1fr}
-      .onboard-body{padding:1.5rem}
-      .division-grid{grid-template-columns:1fr}
+      .onboard-body{padding:1.5rem}.division-grid{grid-template-columns:1fr}
       footer{flex-direction:column;align-items:center;text-align:center;padding:2rem 1.2rem}
-      .admin-user-row{grid-template-columns:1fr;gap:.5rem}
-      .deal-meta{gap:1rem}
+      .admin-user-row{grid-template-columns:1fr;gap:.5rem}.deal-meta{gap:1rem}
     }
     @media(min-width:601px) and (max-width:900px){
       .pillars-grid{grid-template-columns:1fr}
@@ -358,7 +357,6 @@
     </div>
 
     <div id="portalDash">
-
       <div class="dash-header">
         <div>
           <div id="adminBadge" class="admin-badge" style="display:none;">
@@ -377,7 +375,7 @@
         <button class="dash-tab" data-tab="admin" onclick="switchTab('admin')">Admin Panel</button>
       </div>
 
-      <!-- OVERVIEW TAB -->
+      <!-- OVERVIEW -->
       <div id="tab-overview" class="tab-panel active">
         <div class="tier-badge">
           <div>
@@ -394,20 +392,12 @@
           <div class="info-cell"><p class="info-label">Member Since</p><p class="info-value" id="dashJoined">—</p></div>
         </div>
 
-        <!-- ACTIVE DEALS — shown for Tier I, II, III + admin; hidden for Tier IV -->
         <div class="deals-section" id="dealsSection" style="display:none;">
           <div class="deals-header">
             <p class="section-label">Active Deals</p>
-            <button
-              style="background:transparent;border:.5px solid rgba(127,119,221,.35);color:var(--accent);font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.25em;padding:.55rem 1rem;cursor:pointer;text-transform:uppercase;transition:all .25s;"
-              onmouseover="this.style.background='rgba(127,119,221,.1)'"
-              onmouseout="this.style.background='transparent'"
-              onclick="openDealsModal()"
-            >View All →</button>
+            <button class="view-all-btn" id="viewAllBtn">View All →</button>
           </div>
-          <div id="dealsList">
-            <p class="deals-empty">No active deals on your account. Contact LVO Holdings administration to discuss deal flow.</p>
-          </div>
+          <div id="dealsList"></div>
         </div>
 
         <p class="section-label">Recent Activity</p>
@@ -415,8 +405,7 @@
           <p style="font-style:italic;color:var(--dim);font-size:.88rem;">No recent activity recorded.</p>
         </div>
 
-        <!-- LOCKED NOTICE — Tier IV only -->
-        <div class="locked-notice" id="lockedNotice">
+        <div id="lockedNotice">
           <p>Deal Flow · Equity Statements · Capital Reports<br/><span>Access Restricted</span> · Unlocked at Tier III and above</p>
         </div>
       </div>
@@ -479,14 +468,13 @@
   </section>
 
   <!-- DEALS MODAL -->
-  <div id="dealsModal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(5,5,5,.96);align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;">
-    <div style="border:.5px solid rgba(127,119,221,.35);max-width:700px;width:100%;position:relative;margin-top:5rem;">
-      <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent);"></div>
-      <div style="padding:2.5rem 2.5rem 1.5rem;border-bottom:.5px solid rgba(127,119,221,.15);display:flex;justify-content:space-between;align-items:center;">
-        <p style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;">Active Deals — Your Account</p>
-        <button onclick="closeDealsModal()" style="background:none;border:none;color:var(--dim);font-family:'Cinzel',serif;font-size:.65rem;cursor:pointer;transition:color .2s;" onmouseover="this.style.color='var(--red-hi)'" onmouseout="this.style.color='var(--dim)'">✕ Close</button>
+  <div id="dealsModal">
+    <div class="deals-modal-inner">
+      <div class="deals-modal-header">
+        <p class="deals-modal-title">Active Deals — Your Account</p>
+        <button class="deals-modal-close" id="dealsModalCloseBtn">✕ Close</button>
       </div>
-      <div style="padding:2rem 2.5rem;" id="dealsModalContent">
+      <div class="deals-modal-body" id="dealsModalContent">
         <p class="deals-empty">No active deals assigned to your account.</p>
       </div>
     </div>
@@ -523,12 +511,7 @@
 
 <script>
 // ─── CONSTANTS ───
-const TIER_LABELS = {
-  1:'Tier I — Principal',
-  2:'Tier II — Associate',
-  3:'Tier III — Partner',
-  4:'Tier IV — Member'
-};
+const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier III — Partner',4:'Tier IV — Member'};
 
 // ─── localStorage helpers ───
 function ls(key,fb='{}'){try{return JSON.parse(localStorage.getItem(key)||fb)}catch(e){return JSON.parse(fb)}}
@@ -543,16 +526,67 @@ function logActivity(uid,name,action,isAdmin=false){
 }
 
 // ─── REVEAL ───
-const reveals=document.querySelectorAll('.reveal');
-const revObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
-},{threshold:.08});
-reveals.forEach(r=>revObs.observe(r));
+document.querySelectorAll('.reveal').forEach(r=>{
+  new IntersectionObserver((entries,o)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target);}});
+  },{threshold:.08}).observe(r);
+});
 
 // ─── TABS ───
 function switchTab(name){
   document.querySelectorAll('.dash-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+name));
+}
+
+// ─── DEALS MODAL ───
+// Wire up after DOM ready — no inline onclick on the modal backdrop
+document.getElementById('viewAllBtn').addEventListener('click',()=>{
+  document.getElementById('dealsModal').classList.add('open');
+  document.body.style.overflow='hidden';
+});
+document.getElementById('dealsModalCloseBtn').addEventListener('click',()=>{
+  document.getElementById('dealsModal').classList.remove('open');
+  document.body.style.overflow='';
+});
+document.getElementById('dealsModal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('dealsModal')){
+    document.getElementById('dealsModal').classList.remove('open');
+    document.body.style.overflow='';
+  }
+});
+
+// ─── DEALS RENDER ───
+function buildDealHTML(deals, isAdmin, tier){
+  if(!deals||!deals.length){
+    return '<p class="deals-empty">No active deals assigned to your account. Contact LVO Holdings administration to discuss deal flow.</p>';
+  }
+  return deals.map(d=>`
+    <div class="deal-card">
+      <div class="deal-card-header">
+        <p class="deal-name">${d.name||'Unnamed Deal'}</p>
+        <span class="deal-status ${(d.status||'active').toLowerCase()}">${d.status||'Active'}</span>
+      </div>
+      <div class="deal-meta">
+        <div class="deal-meta-item"><p class="deal-meta-label">Division</p><p class="deal-meta-value">${d.division||'—'}</p></div>
+        <div class="deal-meta-item"><p class="deal-meta-label">Position</p><p class="deal-meta-value">${d.position||'—'}</p></div>
+        <div class="deal-meta-item"><p class="deal-meta-label">Date</p><p class="deal-meta-value">${d.date||'—'}</p></div>
+        ${(isAdmin||tier<=1)?`<div class="deal-meta-item"><p class="deal-meta-label">Capital</p><p class="deal-meta-value">${d.capital||'—'}</p></div>`:''}
+      </div>
+      ${d.note?`<p class="deal-note">${d.note}</p>`:''}
+    </div>`).join('');
+}
+
+function renderDeals(user, tier, isAdmin){
+  // ── KEY FIX: read active_deals directly from the live Clerk user object ──
+  // publicMetadata is fully populated by the time showDash() is called
+  // because we call user.reload() before invoking populateDashboard()
+  const deals = Array.isArray(user.publicMetadata?.active_deals)
+    ? user.publicMetadata.active_deals
+    : [];
+
+  const html = buildDealHTML(deals, isAdmin, tier);
+  document.getElementById('dealsList').innerHTML = html;
+  document.getElementById('dealsModalContent').innerHTML = html;
 }
 
 // ─── ONBOARDING ───
@@ -569,9 +603,7 @@ function submitOnboarding(){
   err.classList.remove('show');
   const uid=window._clerkUserId;
   const meta=getMeta(uid)||{};
-  meta.division=_selectedDivision;
-  meta.role=role;
-  meta.onboarded=true;
+  meta.division=_selectedDivision;meta.role=role;meta.onboarded=true;
   setMeta(uid,meta);
   logActivity(uid,window._clerkUserName,`Completed onboarding — Division: ${_selectedDivision}, Role: ${role}`);
   document.getElementById('onboardingOverlay').classList.remove('open');
@@ -580,61 +612,6 @@ function submitOnboarding(){
 
 // ─── RBAC ───
 function getRole(user){return user.publicMetadata?.role||'member'}
-function getTier(uid){return getMeta(uid)?.tier||4}
-
-// ─── DEALS ───
-function getDeals(uid){
-  // Fetch deals directly from the specific user's Clerk publicMetadata
-  if (window._clerkUser && window._clerkUser.id === uid && window._clerkUser.publicMetadata?.active_deals) {
-      return window._clerkUser.publicMetadata.active_deals;
-  }
-  // Fallback if metadata is empty
-  try{return JSON.parse(localStorage.getItem('lvo_deals_'+uid)||'[]')}catch(e){return[]}
-}
-
-function renderDeals(uid,tier,isAdmin){
-  const deals=getDeals(uid);
-  const container=document.getElementById('dealsList');
-  const modalContainer=document.getElementById('dealsModalContent');
-
-  if(!deals.length){
-    const empty='<p class="deals-empty">No active deals assigned to your account. Contact LVO Holdings administration to discuss deal flow.</p>';
-    container.innerHTML=empty;
-    modalContainer.innerHTML=empty;
-    return;
-  }
-
-  const html=deals.map(d=>`
-    <div class="deal-card">
-      <div class="deal-card-header">
-        <p class="deal-name">${d.name||'Unnamed Deal'}</p>
-        <span class="deal-status ${d.status||'active'}">${d.status||'Active'}</span>
-      </div>
-      <div class="deal-meta">
-        <div class="deal-meta-item"><p class="deal-meta-label">Division</p><p class="deal-meta-value">${d.division||'—'}</p></div>
-        <div class="deal-meta-item"><p class="deal-meta-label">Position</p><p class="deal-meta-value">${d.position||'—'}</p></div>
-        <div class="deal-meta-item"><p class="deal-meta-label">Date</p><p class="deal-meta-value">${d.date||'—'}</p></div>
-        ${isAdmin||tier<=1?`<div class="deal-meta-item"><p class="deal-meta-label">Capital</p><p class="deal-meta-value">${d.capital||'—'}</p></div>`:''}
-      </div>
-      ${d.note?`<p class="deal-note">${d.note}</p>`:''}
-    </div>`).join('');
-
-  container.innerHTML=html;
-  modalContainer.innerHTML=html;
-}
-
-function openDealsModal(){
-  const modal=document.getElementById('dealsModal');
-  modal.style.display='flex';
-  document.body.style.overflow='hidden';
-}
-function closeDealsModal(){
-  document.getElementById('dealsModal').style.display='none';
-  document.body.style.overflow='';
-}
-document.getElementById('dealsModal').addEventListener('click',e=>{
-  if(e.target===document.getElementById('dealsModal'))closeDealsModal();
-});
 
 // ─── POPULATE DASHBOARD ───
 function populateDashboard(user){
@@ -656,13 +633,13 @@ function populateDashboard(user){
   document.getElementById('dashTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
   document.getElementById('adminBadge').style.display=isAdmin?'inline-flex':'none';
 
-  // ── FIX: locked notice — only Tier IV sees it ──
+  // Locked notice — Tier IV non-admin only
   document.getElementById('lockedNotice').style.display=(tier===4&&!isAdmin)?'block':'none';
 
-  // ── FIX: active deals section — Tier I/II/III + admin see it ──
-  const canSeDeals=isAdmin||tier<=3;
-  document.getElementById('dealsSection').style.display=canSeDeals?'block':'none';
-  if(canSeDeals) renderDeals(uid,tier,isAdmin);
+  // Deals section — Tier I/II/III + admin
+  const canSeeDeals=isAdmin||tier<=3;
+  document.getElementById('dealsSection').style.display=canSeeDeals?'block':'none';
+  if(canSeeDeals) renderDeals(user, tier, isAdmin);
 
   // Financials tab
   const canFinance=isAdmin||tier<=3;
@@ -677,7 +654,6 @@ function populateDashboard(user){
   document.querySelector('.dash-tab[data-tab="admin"]').classList.toggle('permitted',isAdmin);
   if(isAdmin) renderAdminPanel(user);
 
-  renderActivityFeed(uid);
   logActivity(uid,name,'Signed in to LVO Alliance portal',isAdmin);
   renderActivityFeed(uid);
 }
@@ -703,37 +679,29 @@ function renderAdminPanel(currentUser){
   const ids=Object.keys(allMembers);
   const now=new Date();
   const thisMonth=ids.filter(id=>{
-    const m=allMembers[id];
-    if(!m.joinedRaw)return false;
+    const m=allMembers[id];if(!m.joinedRaw)return false;
     const d=new Date(m.joinedRaw);
     return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
   }).length;
   document.getElementById('adminTotal').textContent=ids.length||'1';
   document.getElementById('adminNew').textContent=thisMonth||'—';
-
   const listEl=document.getElementById('adminUserList');
   if(!ids.length){listEl.innerHTML='<p style="font-style:italic;color:var(--dim);font-size:.88rem;">No members yet.</p>';}
   else{
     listEl.innerHTML=ids.map(id=>{
-      const m=allMembers[id];
-      const tv=m.tier||4;
-      return `
-        <div class="admin-user-row" id="row-${id}">
-          <div>
-            <p class="admin-user-name">${m.name||'Unknown'}</p>
-            <p class="admin-user-email">${m.email||''} · ${m.division||'—'}</p>
-          </div>
-          <select class="tier-select" id="tierSel-${id}">
-            <option value="1" ${tv==1?'selected':''}>Tier I — Principal</option>
-            <option value="2" ${tv==2?'selected':''}>Tier II — Associate</option>
-            <option value="3" ${tv==3?'selected':''}>Tier III — Partner</option>
-            <option value="4" ${tv==4?'selected':''}>Tier IV — Member</option>
-          </select>
-          <button class="admin-save-btn" onclick="adminUpdateTier('${id}','${m.name||'Member'}')">Save</button>
-        </div>`;
+      const m=allMembers[id];const tv=m.tier||4;
+      return`<div class="admin-user-row" id="row-${id}">
+        <div><p class="admin-user-name">${m.name||'Unknown'}</p><p class="admin-user-email">${m.email||''} · ${m.division||'—'}</p></div>
+        <select class="tier-select" id="tierSel-${id}">
+          <option value="1" ${tv==1?'selected':''}>Tier I — Principal</option>
+          <option value="2" ${tv==2?'selected':''}>Tier II — Associate</option>
+          <option value="3" ${tv==3?'selected':''}>Tier III — Partner</option>
+          <option value="4" ${tv==4?'selected':''}>Tier IV — Member</option>
+        </select>
+        <button class="admin-save-btn" onclick="adminUpdateTier('${id}','${(m.name||'Member').replace(/'/g,"\\'")}')">Save</button>
+      </div>`;
     }).join('');
   }
-
   const adminFeed=getActivity();
   const adminFeedEl=document.getElementById('adminActivityFeed');
   if(!adminFeed.length)return;
@@ -750,46 +718,26 @@ function renderAdminPanel(currentUser){
 function adminUpdateTier(targetUid,targetName){
   const sel=document.getElementById('tierSel-'+targetUid);
   const newTier=parseInt(sel.value);
-  const meta=getMeta(targetUid)||{};
-  meta.tier=newTier;
-  setMeta(targetUid,meta);
+  const meta=getMeta(targetUid)||{};meta.tier=newTier;setMeta(targetUid,meta);
   logActivity(window._clerkUserId,window._clerkUserName,`Updated ${targetName}'s tier to ${TIER_LABELS[newTier]}`,true);
   renderAdminPanel(window._clerkUser);
   if(targetUid===window._clerkUserId){
     document.getElementById('dashTier').textContent=TIER_LABELS[newTier];
-    // refresh locked notice and deals visibility
     document.getElementById('lockedNotice').style.display=(newTier===4)?'block':'none';
     document.getElementById('dealsSection').style.display=(newTier<=3)?'block':'none';
   }
 }
 
 // ─── CLERK APPEARANCE ───
-// ── FIX: switched font to DM Sans for inputs so caps/lowercase are clearly readable ──
 const clerkAppearance={
-  variables:{
-    colorBackground:'#050505',colorText:'#F0EEEC',
-    colorPrimary:'#7F77DD',colorInputBackground:'transparent',
-    colorInputText:'#F0EEEC',borderRadius:'0px',
-    fontFamily:"'Cormorant Garamond', Georgia, serif",
-  },
+  variables:{colorBackground:'#050505',colorText:'#F0EEEC',colorPrimary:'#7F77DD',colorInputBackground:'transparent',colorInputText:'#F0EEEC',borderRadius:'0px',fontFamily:"'Cormorant Garamond',Georgia,serif"},
   elements:{
     card:{background:'transparent',border:'.5px solid rgba(127,119,221,.25)',boxShadow:'none',borderRadius:'0'},
-    headerTitle:{fontFamily:"'Cinzel', serif",letterSpacing:'.2em',color:'#C8C8D0'},
+    headerTitle:{fontFamily:"'Cinzel',serif",letterSpacing:'.2em',color:'#C8C8D0'},
     headerSubtitle:{color:'#888880',fontStyle:'italic'},
-    formFieldLabel:{color:'#888880',fontFamily:"'Cinzel', serif",letterSpacing:'.12em',fontSize:'.7rem'},
-    // ── FIX: inputs use a normal serif — no small-caps, no text-transform ──
-    formFieldInput:{
-      background:'transparent',
-      border:'.5px solid rgba(127,119,221,.35)',
-      borderRadius:'0',
-      color:'#F0EEEC',
-      fontFamily:"Georgia, 'Times New Roman', serif",
-      fontSize:'1rem',
-      letterSpacing:'.04em',
-      textTransform:'none',
-      fontVariant:'normal',
-    },
-    formButtonPrimary:{background:'transparent',border:'.5px solid #7F77DD',borderRadius:'0',color:'#7F77DD',fontFamily:"'Cinzel', serif",letterSpacing:'.3em',textTransform:'uppercase',boxShadow:'none'},
+    formFieldLabel:{color:'#888880',fontFamily:"'Cinzel',serif",letterSpacing:'.12em',fontSize:'.7rem'},
+    formFieldInput:{background:'transparent',border:'.5px solid rgba(127,119,221,.35)',borderRadius:'0',color:'#F0EEEC',fontFamily:"Georgia,'Times New Roman',serif",fontSize:'1rem',letterSpacing:'.04em',textTransform:'none',fontVariant:'normal'},
+    formButtonPrimary:{background:'transparent',border:'.5px solid #7F77DD',borderRadius:'0',color:'#7F77DD',fontFamily:"'Cinzel',serif",letterSpacing:'.3em',textTransform:'uppercase',boxShadow:'none'},
     footerActionLink:{color:'#7F77DD'},
     dividerLine:{background:'rgba(127,119,221,.2)'},
     dividerText:{color:'#888880'},
@@ -807,36 +755,34 @@ window.addEventListener('load',async()=>{
   const signInEl=document.getElementById('clerk-sign-in');
   const userBtnEl=document.getElementById('clerk-user-btn');
   const profileEl=document.getElementById('clerk-user-profile');
-
   let signInMounted=false,userBtnMounted=false,profileMounted=false;
 
   function showGate(){
     gate.style.display='block';
     dash.style.display='none';
     userBtnEl.innerHTML='';
-    userBtnMounted=false;
-    profileMounted=false;
+    userBtnMounted=false;profileMounted=false;
     if(!signInMounted){
       Clerk.mountSignIn(signInEl,{appearance:clerkAppearance,routing:'virtual'});
       signInMounted=true;
     }
   }
 
-  function showDash(user){
+  async function showDash(user){
     gate.style.display='none';
     dash.style.display='block';
+
+    // ── KEY FIX: force a fresh reload of the user object so publicMetadata
+    //    (including active_deals) is fully populated before we read it ──
+    try { await user.reload(); } catch(e) { /* non-fatal */ }
+
     window._clerkUser=user;
     window._clerkUserId=user.id;
     window._clerkUserName=user.fullName||user.firstName||'Member';
 
     let meta=getMeta(user.id);
     if(!meta){
-      meta={
-        name:window._clerkUserName,
-        email:user.primaryEmailAddress?.emailAddress||'',
-        tier:4,division:null,role:null,onboarded:false,
-        joinedRaw:user.createdAt,
-      };
+      meta={name:window._clerkUserName,email:user.primaryEmailAddress?.emailAddress||'',tier:4,division:null,role:null,onboarded:false,joinedRaw:user.createdAt};
       setMeta(user.id,meta);
     }
 
@@ -851,11 +797,11 @@ window.addEventListener('load',async()=>{
     }
   }
 
-  if(Clerk.user){showDash(Clerk.user);}else{showGate();}
+  if(Clerk.user){await showDash(Clerk.user);}else{showGate();}
 
-  Clerk.addListener(({user})=>{
+  Clerk.addListener(async({user})=>{
     signInMounted=false;
-    if(user){showDash(user);}else{showGate();}
+    if(user){await showDash(user);}else{showGate();}
   });
 });
 </script>
