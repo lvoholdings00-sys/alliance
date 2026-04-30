@@ -763,21 +763,48 @@ function renderDeals(user, tier, isAdmin){
 
 // ─── NOTEPAD ───
 // Notes keyed by division group so Tier III members of same division share notes
-function getNotes(division){ return ls('lvo_notes_'+division,'[]'); }
-function saveNotes(division,arr){ lsSet('lvo_notes_'+division, arr); }
+// 1. This is the NEW function that separates notes by Project (Active Deals)
+function getNoteKey() {
+    const deals = clerk.user.publicMetadata.active_deals || [];
+    const context = deals.length > 0 ? deals[0].name : (clerk.user.publicMetadata.division || 'General');
+    return `lvo_notes_${context.replace(/\s+/g, '_')}`;
+}
 
-function postNote(){
-  const uid=window._clerkUserId;
-  const meta=getMeta(uid)||{};
-  const division=meta.division||'Unknown';
-  const text=document.getElementById('notepadInput').value.trim();
-  if(!text)return;
-  const notes=getNotes(division);
-  notes.unshift({uid, name:window._clerkUserName, division, text, time:new Date().toISOString()});
-  saveNotes(division, notes.slice(0,80));
-  document.getElementById('notepadInput').value='';
-  renderNotepad(division);
-  logActivity(uid,window._clerkUserName,`Posted a note in ${division} group`);
+function postNote() {
+    const input = document.getElementById('note-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const key = getNoteKey();
+    const notes = JSON.parse(localStorage.getItem(key) || '[]');
+    
+    notes.push({
+        user: clerk.user.fullName,
+        text: text,
+        time: new Date().toLocaleString(),
+        id: Date.now()
+    });
+
+    localStorage.setItem(key, JSON.stringify(notes));
+    input.value = '';
+    renderNotes();
+    
+    logActivity(clerk.user.id, clerk.user.fullName, `Posted a note in ${getNoteKey().replace('lvo_notes_', '')}`);
+}
+
+function renderNotes() {
+    const container = document.getElementById('group-notes-list');
+    if (!container) return;
+    
+    const key = getNoteKey();
+    const notes = JSON.parse(localStorage.getItem(key) || '[]');
+    
+    container.innerHTML = notes.map(n => `
+        <div class="note-item">
+            <div class="note-meta">${n.user} • ${n.time}</div>
+            <div class="note-text">${n.text}</div>
+        </div>
+    `).join('') || '<p class="dim-text">No notes for this project yet.</p>';
 }
 
 function renderNotepad(division){
@@ -947,20 +974,28 @@ function selectDivision(btn,div){
   btn.classList.add('selected');
   _selectedDivision=div;
 }
-function submitOnboarding(){
-  const role=document.getElementById('onboardRole').value.trim();
-  const err=document.getElementById('onboardError');
-  if(!_selectedDivision||!role){err.classList.add('show');return;}
-  err.classList.remove('show');
-  const uid=window._clerkUserId;
-  const meta=getMeta(uid)||{};
-  meta.division=_selectedDivision;meta.role=role;meta.onboarded=true;
-  setMeta(uid,meta);
-  logActivity(uid,window._clerkUserName,`Completed onboarding — Division: ${_selectedDivision}, Role: ${role}`);
-  document.getElementById('onboardingOverlay').classList.remove('open');
-  populateDashboard(window._clerkUser);
-}
+function submitOnboarding() {
+    // Finds the button you clicked earlier (it has the 'active' class)
+    const selectedBtn = document.querySelector('.division-btn.active');
+    const roleInput = document.getElementById('onboardRole').value.trim();
+    const errorMsg = document.getElementById('onboardError');
 
+    if (!selectedBtn || !roleInput) {
+        errorMsg.style.opacity = '1';
+        return;
+    }
+
+    const division = selectedBtn.innerText.split('\n')[0]; // Gets just the name (e.g., Vindex)
+    
+    // Log it so we can see it in the activity feed
+    logActivity(clerk.user.id, clerk.user.fullName, `Completed onboarding as ${roleInput} (${division})`);
+
+    // Hide overlay and save state
+    document.getElementById('onboardingOverlay').style.display = 'none';
+    
+    // Refresh to let the dashboard pick up the new division
+    location.reload(); 
+}
 // ─── RBAC ───
 function getRole(user){return user.publicMetadata?.role||'member'}
 
