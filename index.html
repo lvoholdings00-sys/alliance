@@ -497,11 +497,11 @@
           <div id="adminNotesView" style="display:none;">
             <p class="section-label" style="margin-bottom:1rem;">Organization Notes</p>
             <div class="admin-notes-filter" id="adminNotesFilter">
-              <button class="notes-filter-btn active" onclick="filterNotes('all',this)">All</button>
-              <button class="notes-filter-btn" onclick="filterNotes('Vindex',this)">Vindex</button>
-              <button class="notes-filter-btn" onclick="filterNotes('Operations',this)">Operations</button>
-              <button class="notes-filter-btn" onclick="filterNotes('Alliance',this)">Alliance</button>
-              <button class="notes-filter-btn" onclick="filterNotes('Holdings',this)">Holdings</button>
+              <button class="notes-filter-btn active" onclick="adminFilterNotes('all',this)">All</button>
+              <button class="notes-filter-btn" onclick="adminFilterNotes('Vindex',this)">Vindex</button>
+              <button class="notes-filter-btn" onclick="adminFilterNotes('Operations',this)">Operations</button>
+              <button class="notes-filter-btn" onclick="adminFilterNotes('Alliance',this)">Alliance</button>
+              <button class="notes-filter-btn" onclick="adminFilterNotes('Holdings',this)">Holdings</button>
             </div>
             <div id="adminNotesList" class="notepad-entries" style="max-height:320px;border:.5px solid rgba(127,119,221,.15);padding:.8rem 1rem;margin-bottom:2rem;">
               <p class="notepad-empty">No notes recorded yet.</p>
@@ -759,74 +759,132 @@ function renderDeals(user, tier, isAdmin){
   document.getElementById('dealsModalContent').innerHTML = html;
 }
 
-// ─── NOTEPAD ───
 // ─── LIVE NOTEPAD (Supabase Integration) ───
 const SUPABASE_URL = 'https://pumteihkiaftgwbexaid.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bXRlaWhraWFmdGd3YmV4YWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjAyMjYsImV4cCI6MjA5MzEzNjIyNn0.6JqNyNH_BBs-CsvAT41L_7Ku8G4CN_ymb9fXVYJEvf4'; 
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bXRlaWhraWFmdGd3YmV4YWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjAyMjYsImV4cCI6MjA5MzEzNjIyNn0.6JqNyNH_BBs-CsvAT41L_7Ku8G4CN_ymb9fXVYJEvf4';
 
-async function fetchAndRenderNotes(filterDiv = 'all') {
-    try {
-        let url = `${SUPABASE_URL}/rest/v1/lvo_notes?select=*&order=created_at.desc`;
-        if (filterDiv !== 'all') {
-            url += `&division=eq.${filterDiv}`;
-        }
+const SB_HEADERS = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json'
+};
 
-        const res = await fetch(url, {
-            headers: {
-                'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${SUPABASE_KEY}`
-            }
-        });
-        const data = await res.json();
+function escNote(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 
-        // Update Organization Notes (Admin View)
-        const adminList = document.getElementById('adminNotesList');
-        if (adminList) {
-            if (data.length === 0) {
-                adminList.innerHTML = '<p class="notepad-empty">No notes recorded in the database yet.</p>';
-            } else {
-                adminList.innerHTML = data.map(n => `
-                    <div class="notepad-entry">
-                        <div class="notepad-entry-meta">
-                            <span class="notepad-entry-author">${n.author}</span>
-                            <span style="color:var(--accent);opacity:.6">${n.division}</span>
-                            <span>${new Date(n.created_at).toLocaleString()}</span>
-                        </div>
-                        <p class="notepad-entry-text">${n.text}</p>
-                    </div>
-                `).join('');
-            }
-        }
+// ── Fetch all notes from Supabase, then split into admin list + member group list ──
+async function fetchAndRenderNotes(adminFilter = 'all') {
+  try {
+    // Always fetch ALL notes — we need them for both admin list (filtered) and member group list
+    const allRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/lvo_notes?select=*&order=created_at.desc`,
+      { headers: SB_HEADERS }
+    );
+    if (!allRes.ok) throw new Error(`HTTP ${allRes.status}`);
+    const allData = await allRes.json();
 
-        // Update Group Notepad (Member View)
-        // This automatically filters to only show notes for the user's specific division
-        const userDiv = window.currentUserDivision || 'Alliance'; 
-        const groupNotes = data.filter(n => n.division.toLowerCase() === userDiv.toLowerCase());
-        const groupEl = document.getElementById('notepadEntries');
-        if (groupEl) {
-            document.getElementById('notesGroupLabel').textContent = userDiv + ' Group';
-            if (!groupNotes.length) {
-                groupEl.innerHTML = '<p class="notepad-empty">No group notes yet.</p>';
-            } else {
-                groupEl.innerHTML = groupNotes.map(n => `
-                    <div class="notepad-entry">
-                        <div class="notepad-entry-meta">
-                            <span class="notepad-entry-author">${n.author}</span>
-                            <span>${new Date(n.created_at).toLocaleDateString()}</span>
-                        </div>
-                        <p class="notepad-entry-text">${n.text}</p>
-                    </div>
-                `).join('');
-            }
-        }
-    } catch (err) {
-        console.error("Supabase Fetch Error:", err);
+    // ── ADMIN NOTES LIST (filtered by adminFilter pill) ──
+    const adminList = document.getElementById('adminNotesList');
+    if (adminList) {
+      const filtered = adminFilter === 'all'
+        ? allData
+        : allData.filter(n => (n.division||'').toLowerCase() === adminFilter.toLowerCase());
+
+      adminList.innerHTML = filtered.length
+        ? filtered.map(n => `
+            <div class="notepad-entry">
+              <div class="notepad-entry-meta">
+                <span class="notepad-entry-author">${escNote(n.author)}</span>
+                <span style="color:var(--accent);opacity:.6">${escNote(n.division)}</span>
+                <span>${new Date(n.created_at).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</span>
+              </div>
+              <p class="notepad-entry-text">${escNote(n.text)}</p>
+            </div>`).join('')
+        : '<p class="notepad-empty">No notes for this division yet.</p>';
     }
+
+    // ── MEMBER GROUP NOTEPAD (always scoped to user's own division) ──
+    const userDiv = window.currentUserDivision || '';
+    const groupEl = document.getElementById('notepadEntries');
+    if (groupEl && userDiv) {
+      const groupNotes = allData.filter(n =>
+        (n.division||'').toLowerCase() === userDiv.toLowerCase()
+      );
+      document.getElementById('notesGroupLabel').textContent = userDiv + ' Group';
+      groupEl.innerHTML = groupNotes.length
+        ? groupNotes.map(n => `
+            <div class="notepad-entry">
+              <div class="notepad-entry-meta">
+                <span class="notepad-entry-author">${escNote(n.author)}</span>
+                <span>${new Date(n.created_at).toLocaleDateString('en-US',{dateStyle:'medium'})}</span>
+              </div>
+              <p class="notepad-entry-text">${escNote(n.text)}</p>
+            </div>`).join('')
+        : '<p class="notepad-empty">No group notes yet. Be the first to add one.</p>';
+    }
+
+  } catch (err) {
+    console.error('Supabase Fetch Error:', err);
+    const adminList = document.getElementById('adminNotesList');
+    if (adminList) adminList.innerHTML = '<p class="notepad-empty">Error loading notes. Check connection.</p>';
+    const groupEl = document.getElementById('notepadEntries');
+    if (groupEl) groupEl.innerHTML = '<p class="notepad-empty">Error loading notes. Check connection.</p>';
+  }
 }
 
-// This replaces the old local function so the buttons talk to Supabase
+// ── Admin filter pill handler (replaces missing filterNotes) ──
+function adminFilterNotes(div, btn) {
+  document.querySelectorAll('#adminNotesFilter .notes-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  fetchAndRenderNotes(div);
+}
+
+// ── renderAdminNotes: called from initTasksTab ──
 function renderAdminNotes(filterDiv) {
-    fetchAndRenderNotes(filterDiv);
+  fetchAndRenderNotes(filterDiv);
+}
+
+// ── renderNotepad: called from initTasksTab for member view ──
+// Just re-renders the group notepad from a fresh Supabase fetch
+function renderNotepad(division) {
+  window.currentUserDivision = division;
+  const labelEl = document.getElementById('notesGroupLabel');
+  if (labelEl) labelEl.textContent = division + ' Group';
+  fetchAndRenderNotes('all'); // fetches all, then filters member section internally
+}
+
+// ── POST a note to Supabase ──
+async function postNote() {
+  const input = document.getElementById('notepadInput');
+  const btn   = document.querySelector('.notepad-post-btn');
+  const text  = input ? input.value.trim() : '';
+  if (!text) return;
+
+  const user     = window._clerkUser;
+  if (!user) return;
+  const meta     = getMeta(user.id) || {};
+  const division = meta.division || window.currentUserDivision || 'Alliance';
+  const author   = window._clerkUserName || user.fullName || 'Member';
+
+  if (btn) btn.disabled = true;
+  if (input) input.disabled = true;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/lvo_notes`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ text, author, division })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (input) input.value = '';
+    logActivity(user.id, author, `Posted a note to ${division} group`);
+    fetchAndRenderNotes('all'); // refresh both views
+  } catch (err) {
+    console.error('postNote error:', err);
+    alert('Failed to post note. Please try again.');
+  } finally {
+    if (btn) btn.disabled = false;
+    if (input) input.disabled = false;
+  }
 }
 
 // ─── FINANCE SNAPSHOT ───
@@ -940,7 +998,8 @@ function initTasksTab(user,tier,isAdmin){
 
   // Members: render their division notepad
   const meta=getMeta(user.id)||{};
-  const division=meta.division||'Unknown';
+  const division=meta.division||'Alliance';
+  window.currentUserDivision=division; // must be set BEFORE renderNotepad
   renderNotepad(division);
   renderFinanceSnapshot(user,tier);
 }
@@ -1167,6 +1226,8 @@ window.addEventListener('load',async()=>{
       meta={name:window._clerkUserName,email:user.primaryEmailAddress?.emailAddress||'',tier:4,division:null,role:null,onboarded:false,joinedRaw:user.createdAt};
       setMeta(user.id,meta);
     }
+    // Set division globally so notepad fetches filter correctly
+    window.currentUserDivision = meta.division || 'Alliance';
 
     if(!userBtnMounted){Clerk.mountUserButton(userBtnEl,{appearance:clerkAppearance});userBtnMounted=true;}
     if(!profileMounted){Clerk.mountUserProfile(profileEl,{appearance:clerkAppearance});profileMounted=true;}
