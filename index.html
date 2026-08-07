@@ -54,15 +54,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 .section-divider span{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.4em;color:var(--accent);white-space:nowrap}
 
 /* PILLARS */
-.pillars{padding:0 2rem;max-width:1100px;margin:0 auto;width:100%}
-.pillars-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:.5px solid color-mix(in srgb,var(--accent) 20%,transparent)}
-.pillar{padding:3rem 2rem;border-right:.5px solid color-mix(in srgb,var(--accent) 12%,transparent);position:relative;overflow:hidden;transition:background .4s}
-.pillar:last-child{border-right:none}
-.pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent);transform:scaleX(0);transition:transform .5s cubic-bezier(.16,1,.3,1);pointer-events:none}
-.pillar:hover{background:color-mix(in srgb,var(--accent) 3%,transparent)}
-.pillar:hover::before{transform:scaleX(1)}
-.pillar-icon{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;color:var(--accent);margin-bottom:1.5rem;display:block;opacity:.7}
-.pillar-title{font-family:'Cinzel',serif;font-size:.88rem;font-weight:600;letter-spacing:.18em;color:var(--chrome);margin-bottom:1rem;text-transform:uppercase}
+.pillars{padding:0 2rem;max-width:800px;margin:0 auto;width:100%}
+.pillars-list{display:flex;flex-direction:column}
+.pillar{display:flex;align-items:baseline;gap:2.5rem;padding:2rem 0 2rem 1.5rem;border-bottom:.5px solid color-mix(in srgb,var(--accent) 12%,transparent);border-left:.5px solid transparent;position:relative;transition:background .4s,border-color .4s}
+.pillar:last-child{border-bottom:none}
+.pillar:hover{background:color-mix(in srgb,var(--accent) 3%,transparent);border-left-color:var(--accent)}
+.pillar-icon{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;color:var(--accent);opacity:.7;min-width:96px;padding-top:.2rem}
+.pillar-title{font-family:'Cinzel',serif;font-size:.88rem;font-weight:600;letter-spacing:.18em;color:var(--chrome);margin-bottom:.6rem;text-transform:uppercase}
 .pillar-text{font-size:.92rem;font-weight:300;line-height:1.9;color:var(--dim);font-style:italic}
 
 /* TIERS */
@@ -122,18 +120,12 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 15%,transparent);pa
   nav{padding:1.2rem}
   .nav-tag{display:none}
   .pillars{padding:0 1.2rem}
-  .pillars-grid{grid-template-columns:1fr}
-  .pillar{border-right:none;border-bottom:.5px solid color-mix(in srgb,var(--accent) 12%,transparent)}
-  .pillar:last-child{border-bottom:none}
+  .pillar{gap:1.2rem;padding-left:1rem}
+  .pillar-icon{min-width:64px}
   .tiers{padding:0 1.2rem 5rem}
   .tier{gap:1.2rem}
   #portalGate,#portalRedirect{max-width:100%;padding:2rem 1.2rem;border-left:none;border-right:none}
   footer{flex-direction:column;text-align:center;padding:2rem 1.2rem}
-}
-@media(min-width:601px) and (max-width:900px){
-  .pillars-grid{grid-template-columns:1fr}
-  .pillar{border-right:none;border-bottom:.5px solid color-mix(in srgb,var(--accent) 12%,transparent)}
-  .pillar:last-child{border-bottom:none}
 }
 
   </style>
@@ -169,21 +161,21 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 15%,transparent);pa
     <div class="hero-rule"></div>
   </section>
 
-  <div class="section-divider reveal"><span data-scramble>What We Do</span></div>
-  <section class="pillars">
-    <div class="pillars-grid">
-      <div class="pillar reveal"><span class="pillar-icon" data-scramble>Joint Ventures</span><p class="pillar-title" data-scramble>Deal Structuring</p><p class="pillar-text" data-scramble-block>Co-investment frameworks built for mutual benefit. Every deal is structured with protection on both sides.</p></div>
-      <div class="pillar reveal" style="transition-delay:.15s"><span class="pillar-icon" data-scramble>Capital</span><p class="pillar-title" data-scramble>Strategic Capital</p><p class="pillar-text" data-scramble-block>Deploying and attracting capital with precision. We don't chase profit — we position for it.</p></div>
-      <div class="pillar reveal" style="transition-delay:.3s"><span class="pillar-icon" data-scramble>Network</span><p class="pillar-title" data-scramble>Inner Circle</p><p class="pillar-text" data-scramble-block>A vetted network of partners, operators, and professionals. Relationships built over time, proven through results.</p></div>
-    </div>
-  </section>
-
   <div class="section-divider reveal"><span data-scramble>Partnership Tiers</span></div>
   <section class="tiers">
     <div class="tier reveal"><span class="tier-num" data-scramble>Tier I</span><div class="tier-content"><p class="tier-title" data-scramble>Principal</p><p class="tier-text" data-scramble-block>Founding members of LVO Holdings; equity holders in the parent entity with full governance rights. Restricted to family members only.</p></div></div>
     <div class="tier reveal" style="transition-delay:.1s"><span class="tier-num" data-scramble>Tier II</span><div class="tier-content"><p class="tier-title" data-scramble>Associate</p><p class="tier-text" data-scramble-block>Trusted professionals in the LVO orbit. Attorneys, CPAs, contractors, lenders. Preferred access with consistent business and no equity.</p></div></div>
     <div class="tier reveal" style="transition-delay:.2s"><span class="tier-num" data-scramble>Tier III</span><div class="tier-content"><p class="tier-title" data-scramble>Partner</p><p class="tier-text" data-scramble-block>Co-investors brought in deal by deal through LVO Alliance. Earn deal-level equity. Advancement is based on performance, not position.</p></div></div>
     <div class="tier reveal" style="transition-delay:.3s"><span class="tier-num" data-scramble>Tier IV</span><div class="tier-content"><p class="tier-title" data-scramble>Member</p><p class="tier-text" data-scramble-block>Starting position within the LVO community. Prove your worth and climb the ranks.</p></div></div>
+  </section>
+
+  <div class="section-divider reveal"><span data-scramble>What We Do</span></div>
+  <section class="pillars">
+    <div class="pillars-list">
+      <div class="pillar reveal"><span class="pillar-icon" data-scramble>Joint Ventures</span><div><p class="pillar-title" data-scramble>Deal Structuring</p><p class="pillar-text" data-scramble-block>Co-investment frameworks built for mutual benefit. Every deal is structured with protection on both sides.</p></div></div>
+      <div class="pillar reveal" style="transition-delay:.15s"><span class="pillar-icon" data-scramble>Capital</span><div><p class="pillar-title" data-scramble>Strategic Capital</p><p class="pillar-text" data-scramble-block>Deploying and attracting capital with precision. We don't chase profit — we position for it.</p></div></div>
+      <div class="pillar reveal" style="transition-delay:.3s"><span class="pillar-icon" data-scramble>Network</span><div><p class="pillar-title" data-scramble>Inner Circle</p><p class="pillar-text" data-scramble-block>A vetted network of partners, operators, and professionals. Relationships built over time, proven through results.</p></div></div>
+    </div>
   </section>
 
   <div class="section-divider reveal"><span data-scramble>Investor Portal</span></div>
@@ -205,9 +197,9 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 15%,transparent);pa
   <footer>
     <a class="footer-back" href="https://wearelvo.com" data-scramble>← wearelvo.com</a>
     <div class="footer-links">
-      <a href="https://wearelvo.com/terms">Terms of Service</a>
+      <a href="terms.html">Terms of Service</a>
       <span>·</span>
-      <a href="https://wearelvo.com/privacy">Privacy Policy</a>
+      <a href="privacy.html">Privacy Policy</a>
     </div>
     <span class="footer-copy">&copy; 2026 LVO Holdings · All Rights Reserved</span>
   </footer>
