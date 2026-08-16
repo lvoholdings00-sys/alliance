@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     :root{
@@ -81,6 +82,7 @@
     .lp-field label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.12em;color:var(--dim);text-transform:uppercase}
     .lp-field input{background:transparent;border:.5px solid rgba(127,119,221,.35);border-radius:0;color:var(--white);font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;letter-spacing:.04em;padding:.8rem 1rem;outline:none;transition:border-color .25s}
     .lp-field input:focus{border-color:var(--accent)}
+    .lp-row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
     .lp-submit{background:transparent;border:.5px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.3em;padding:1rem 2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
     .lp-submit:hover{background:var(--accent);color:var(--bg)}
     .lp-submit:disabled{opacity:.4;cursor:default}
@@ -90,6 +92,7 @@
     .lp-msg{font-size:.85rem;font-style:italic;color:var(--dim);line-height:1.6;min-height:1.2em}
     .lp-msg.error{color:var(--red-hi)}
     .lp-msg.success{color:var(--accent)}
+    .lp-code-input{letter-spacing:.6em;text-align:center;font-size:1.3rem !important}
 
     /* Signed-in redirect card */
     #portalRedirect{display:none;border:.5px solid rgba(127,119,221,.25);padding:3.5rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
@@ -112,7 +115,6 @@
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
     .reveal.visible{opacity:1;transform:translateY(0)}
 
-    /* SCRAMBLE CHARS — word-wrapper keeps line-wraps at word boundaries only */
     .scramble-word{display:inline-block;white-space:nowrap}
     .scramble-char{display:inline-block;will-change:contents}
 
@@ -123,6 +125,7 @@
       .tiers{padding:0 1.2rem 5rem}.tier{gap:1.2rem}
       #portalGate,#portalRedirect{max-width:100%;padding:2rem 1.2rem;border-left:none;border-right:none}
       footer{flex-direction:column;align-items:center;text-align:center;padding:2rem 1.2rem}
+      .lp-row2{grid-template-columns:1fr}
     }
     @media(min-width:601px) and (max-width:900px){
       .pillars-grid{grid-template-columns:1fr}
@@ -141,7 +144,7 @@
     <div class="nav-right">
       <span class="nav-tag" data-scramble> Partnership &amp; Capital Division</span>
       <div id="navUserBtn">
-        <a class="nav-dash-link" href="https://dashboard.alliance.wearelvo.com/">→ Dashboard</a>
+        <a class="nav-dash-link" id="navDashLink" href="https://dashboard.alliance.wearelvo.com/">→ Dashboard</a>
         <div id="userChip" class="user-chip">
           <span class="user-chip-email" id="userChipEmail"></span>
           <button class="user-signout" id="userSignOutBtn" type="button">Sign Out</button>
@@ -178,12 +181,30 @@
   <div class="section-divider reveal"><span data-scramble>Investor Portal</span></div>
   <section class="portal-wrap reveal">
 
-    <!-- GUEST: sign-in form -->
+    <!-- GUEST: sign-in / sign-up / 2FA form -->
     <div id="portalGate">
-      <p class="gate-title" data-scramble>Alliance Portal Access</p>
-      <p class="gate-sub" data-scramble-block>Sign in to access your Alliance member dashboard.<br/>New members are assigned Tier IV upon first sign-in.</p>
+      <p class="gate-title" data-scramble id="gateTitle">Alliance Portal Access</p>
+      <p class="gate-sub" id="gateSub">Sign in to access your Alliance member dashboard.<br/>New members are assigned Tier IV upon first sign-in.</p>
+
       <div id="authForm">
+
+        <!-- STEP: sign in / sign up / magic link -->
         <form class="lp-form" id="pwForm">
+          <!-- signup-only fields -->
+          <div class="lp-row2" id="signupNameRow" style="display:none">
+            <div class="lp-field">
+              <label for="authFirst">First Name</label>
+              <input type="text" id="authFirst" autocomplete="given-name"/>
+            </div>
+            <div class="lp-field">
+              <label for="authLast">Last Name</label>
+              <input type="text" id="authLast" autocomplete="family-name"/>
+            </div>
+          </div>
+          <div class="lp-field" id="signupUserField" style="display:none">
+            <label for="authUsername">Username</label>
+            <input type="text" id="authUsername" autocomplete="username"/>
+          </div>
           <div class="lp-field">
             <label for="authEmail">Email</label>
             <input type="email" id="authEmail" autocomplete="email" required/>
@@ -199,6 +220,49 @@
           </div>
           <p class="lp-msg" id="authMsg"></p>
         </form>
+
+        <!-- STEP: verify-email notice (post signup) -->
+        <div id="verifyNotice" style="display:none">
+          <p class="lp-msg success" style="margin-bottom:1.2rem">Account created. We sent a verification link to your email — confirm it, then sign in below.</p>
+          <button type="button" class="lp-submit" id="backToSigninBtn">Back to Sign In</button>
+        </div>
+
+        <!-- STEP: 2FA code entry -->
+        <form class="lp-form" id="twofaForm" style="display:none">
+          <p class="lp-msg" style="margin-bottom:.2rem">We emailed a 6-digit code to <span id="twofaEmailLabel"></span>.</p>
+          <div class="lp-field">
+            <label for="twofaCode">Verification Code</label>
+            <input type="text" id="twofaCode" class="lp-code-input" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code"/>
+          </div>
+          <button type="submit" class="lp-submit" id="twofaSubmitBtn">Verify →</button>
+          <div class="lp-toggle-row">
+            <button type="button" class="lp-link" id="twofaResendBtn">Resend code</button>
+            <button type="button" class="lp-link" id="twofaCancelBtn">Cancel</button>
+          </div>
+          <p class="lp-msg" id="twofaMsg"></p>
+        </form>
+
+        <!-- STEP: complete profile (first-time magic-link users) -->
+        <form class="lp-form" id="profileForm" style="display:none">
+          <p class="lp-msg" style="margin-bottom:.2rem">One last step — complete your profile.</p>
+          <div class="lp-row2">
+            <div class="lp-field">
+              <label for="profFirst">First Name</label>
+              <input type="text" id="profFirst" autocomplete="given-name" required/>
+            </div>
+            <div class="lp-field">
+              <label for="profLast">Last Name</label>
+              <input type="text" id="profLast" autocomplete="family-name" required/>
+            </div>
+          </div>
+          <div class="lp-field">
+            <label for="profUsername">Username</label>
+            <input type="text" id="profUsername" autocomplete="username" required/>
+          </div>
+          <button type="submit" class="lp-submit">Finish Setup →</button>
+          <p class="lp-msg" id="profileMsg"></p>
+        </form>
+
       </div>
     </div>
 
@@ -207,7 +271,7 @@
       <p class="redirect-title" data-scramble>Alliance Portal</p>
       <p class="redirect-name" id="redirectName">—</p>
       <p class="redirect-sub" id="redirectSub">You're signed in. Your dashboard is waiting.</p>
-      <a class="redirect-btn" href="https://dashboard.alliance.wearelvo.com/">Enter Dashboard →</a>
+      <a class="redirect-btn" id="enterDashboardBtn" href="https://dashboard.alliance.wearelvo.com/">Enter Dashboard →</a>
       <div class="redirect-rule"></div>
     </div>
 
@@ -228,7 +292,6 @@ document.querySelectorAll('.reveal').forEach(r => {
   }, { threshold: .08 }).observe(r);
 });
 
-/* ── SCRAMBLE CONFIG — edit these three values ── */
 const SCRAMBLE_RADIUS   = 20;
 const SCRAMBLE_DURATION = 200;
 const SCRAMBLE_CHARS    = 'LVOᛪ༙';
@@ -245,38 +308,26 @@ function buildWordSpan(word) {
   }
   return wordSpan;
 }
-
 function splitTextNode(textNode) {
   const text = textNode.textContent;
   const frag = document.createDocumentFragment();
   const parts = text.split(/(\s+)/);
   parts.forEach(part => {
     if (part === '') return;
-    if (/^\s+$/.test(part)) {
-      frag.appendChild(document.createTextNode(part));
-    } else {
-      frag.appendChild(buildWordSpan(part));
-    }
+    if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+    else frag.appendChild(buildWordSpan(part));
   });
   return frag;
 }
-
 function splitElement(el) {
   const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
   const nodes = [];
   let n;
   while ((n = walker.nextNode())) nodes.push(n);
-  nodes.forEach(tn => {
-    if (tn.textContent.trim()) tn.parentNode.replaceChild(splitTextNode(tn), tn);
-  });
+  nodes.forEach(tn => { if (tn.textContent.trim()) tn.parentNode.replaceChild(splitTextNode(tn), tn); });
 }
-
-document.querySelectorAll('[data-scramble], [data-scramble-block]').forEach(el => {
-  splitElement(el);
-});
-
+document.querySelectorAll('[data-scramble], [data-scramble-block]').forEach(el => splitElement(el));
 const activeTimers = new Map();
-
 function scrambleChar(span) {
   const orig = span.dataset.orig;
   if (!orig) return;
@@ -284,17 +335,11 @@ function scrambleChar(span) {
   const start = performance.now();
   const id = setInterval(() => {
     const elapsed = performance.now() - start;
-    if (elapsed < SCRAMBLE_DURATION) {
-      span.textContent = SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-    } else {
-      span.textContent = orig;
-      clearInterval(id);
-      activeTimers.delete(span);
-    }
+    if (elapsed < SCRAMBLE_DURATION) span.textContent = SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+    else { span.textContent = orig; clearInterval(id); activeTimers.delete(span); }
   }, 33);
   activeTimers.set(span, id);
 }
-
 let raf = null;
 document.addEventListener('pointermove', (e) => {
   if (raf) return;
@@ -312,30 +357,19 @@ document.addEventListener('pointermove', (e) => {
     });
   });
 });
-
 </script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendSignInLinkToEmail,
-  isSignInWithEmailLink,
-  signInWithEmailLink,
-  signOut
+  getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut,
+  sendEmailVerification, updateProfile
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp
+  getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, Timestamp
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyB5m5ah1olAjus4r7M14flO1BxoWCfO4oU",
   authDomain: "alliance-4afdc.firebaseapp.com",
@@ -344,54 +378,77 @@ const firebaseConfig = {
   messagingSenderId: "713313535350",
   appId: "1:713313535350:web:18ab3f5de64604e9f42657"
 };
-
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-// Ensures a `members/{uid}` doc exists, assigning Tier IV on first sign-in.
-// Safe to call every time a user is detected signed-in — it only writes
-// once, on the first sign-in, and never overwrites an existing doc.
-async function ensureMemberRecord(user) {
-  const memberRef = doc(db, 'members', user.uid);
-  const snap = await getDoc(memberRef);
-  if (!snap.exists()) {
-    await setDoc(memberRef, {
-      email: user.email || null,
-      tier: 4,
-      tierLabel: 'Member',
-      createdAt: serverTimestamp()
-    });
-  }
-  return snap.exists() ? snap.data() : { tier: 4, tierLabel: 'Member' };
-}
+/* ── EmailJS — fill these in after you create a free account at emailjs.com ── */
+const EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'YOUR_EMAILJS_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
+if (window.emailjs) emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
 const EMAIL_STORAGE_KEY = 'lvoAllianceEmailForSignIn';
+const SESSION_TTL_MS    = 12 * 60 * 60 * 1000; // 12 hours
+const CODE_TTL_MS       = 5 * 60 * 1000;       // 5 minutes
 
-const gate            = document.getElementById('portalGate');
-const redirect        = document.getElementById('portalRedirect');
+/* ── DOM refs ── */
+const gate           = document.getElementById('portalGate');
+const redirect       = document.getElementById('portalRedirect');
 const navUserBtn      = document.getElementById('navUserBtn');
 const userChipEmail   = document.getElementById('userChipEmail');
 const userSignOutBtn  = document.getElementById('userSignOutBtn');
+const navDashLink     = document.getElementById('navDashLink');
+const enterDashboardBtn = document.getElementById('enterDashboardBtn');
 
 const pwForm          = document.getElementById('pwForm');
+const signupNameRow   = document.getElementById('signupNameRow');
+const signupUserField = document.getElementById('signupUserField');
+const firstInput      = document.getElementById('authFirst');
+const lastInput       = document.getElementById('authLast');
+const usernameInput   = document.getElementById('authUsername');
 const emailInput      = document.getElementById('authEmail');
 const passwordField   = document.getElementById('authPasswordField');
 const passwordInput   = document.getElementById('authPassword');
 const submitBtn       = document.getElementById('authSubmitBtn');
-const modeToggle       = document.getElementById('authModeToggle');
-const magicToggle       = document.getElementById('authMagicToggle');
+const modeToggle      = document.getElementById('authModeToggle');
+const magicToggle     = document.getElementById('authMagicToggle');
 const authMsg         = document.getElementById('authMsg');
 
-let mode = 'signin'; // 'signin' | 'signup' | 'magic'
+const verifyNotice    = document.getElementById('verifyNotice');
+const backToSigninBtn = document.getElementById('backToSigninBtn');
 
-function setMsg(text, type) {
-  authMsg.textContent = text || '';
-  authMsg.className = 'lp-msg' + (type ? ' ' + type : '');
+const twofaForm        = document.getElementById('twofaForm');
+const twofaEmailLabel  = document.getElementById('twofaEmailLabel');
+const twofaCodeInput   = document.getElementById('twofaCode');
+const twofaMsg         = document.getElementById('twofaMsg');
+const twofaResendBtn   = document.getElementById('twofaResendBtn');
+const twofaCancelBtn   = document.getElementById('twofaCancelBtn');
+
+const profileForm     = document.getElementById('profileForm');
+const profFirst       = document.getElementById('profFirst');
+const profLast        = document.getElementById('profLast');
+const profUsername    = document.getElementById('profUsername');
+const profileMsg      = document.getElementById('profileMsg');
+
+let mode = 'signin'; // 'signin' | 'signup' | 'magic'
+let pendingUserForProfile = null;
+
+function setMsg(text, type) { authMsg.textContent = text || ''; authMsg.className = 'lp-msg' + (type ? ' ' + type : ''); }
+function showStep(step) {
+  pwForm.style.display        = step === 'pw'       ? 'flex' : 'none';
+  verifyNotice.style.display  = step === 'verify'    ? 'block' : 'none';
+  twofaForm.style.display     = step === 'twofa'     ? 'flex' : 'none';
+  profileForm.style.display   = step === 'profile'   ? 'flex' : 'none';
 }
 
 function renderMode() {
   setMsg('');
+  const isSignup = mode === 'signup';
+  signupNameRow.style.display   = isSignup ? 'grid' : 'none';
+  signupUserField.style.display = isSignup ? 'flex' : 'none';
+  firstInput.required = isSignup; lastInput.required = isSignup; usernameInput.required = isSignup;
+
   if (mode === 'magic') {
     passwordField.style.display = 'none';
     passwordInput.required = false;
@@ -401,23 +458,66 @@ function renderMode() {
   } else {
     passwordField.style.display = 'flex';
     passwordInput.required = true;
-    submitBtn.textContent = mode === 'signup' ? 'Create Account' : 'Sign In';
+    submitBtn.textContent = isSignup ? 'Create Account' : 'Sign In';
     modeToggle.style.display = 'inline';
-    modeToggle.textContent = mode === 'signup' ? 'Sign in instead' : 'Create an account instead';
+    modeToggle.textContent = isSignup ? 'Sign in instead' : 'Create an account instead';
     magicToggle.textContent = 'Sign in with email link';
   }
 }
+modeToggle.addEventListener('click', () => { mode = mode === 'signup' ? 'signin' : 'signup'; renderMode(); });
+magicToggle.addEventListener('click', () => { mode = mode === 'magic' ? 'signin' : 'magic'; renderMode(); });
+backToSigninBtn.addEventListener('click', () => { mode = 'signin'; renderMode(); showStep('pw'); });
 
-modeToggle.addEventListener('click', () => {
-  mode = mode === 'signup' ? 'signin' : 'signup';
-  renderMode();
-});
+/* ── crypto helpers for the 2FA code ── */
+async function sha256Hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+function genCode() { return String(Math.floor(100000 + Math.random() * 900000)); }
+function genToken() {
+  return (crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)));
+}
 
-magicToggle.addEventListener('click', () => {
-  mode = mode === 'magic' ? 'signin' : 'magic';
-  renderMode();
-});
+async function send2FACode(user) {
+  const code = genCode();
+  const codeHash = await sha256Hex(code);
+  await setDoc(doc(db, 'email2fa', user.uid), {
+    codeHash, attempts: 0, expiresAt: Timestamp.fromMillis(Date.now() + CODE_TTL_MS)
+  });
+  if (window.emailjs && EMAILJS_SERVICE_ID !== 'YOUR_EMAILJS_SERVICE_ID') {
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { to_email: user.email, code });
+    } catch (e) { console.error('EmailJS send failed:', e); }
+  } else {
+    console.warn('EmailJS not configured — 2FA code (dev only):', code);
+  }
+  twofaEmailLabel.textContent = user.email;
+  twofaMsg.textContent = '';
+  twofaCodeInput.value = '';
+  showStep('twofa');
+}
 
+async function verify2FACode(user, inputCode) {
+  const ref = doc(db, 'email2fa', user.uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) throw new Error('No pending code. Request a new one.');
+  const data = snap.data();
+  if (Date.now() > data.expiresAt.toMillis()) throw new Error('Code expired. Request a new one.');
+  if ((data.attempts || 0) >= 5) throw new Error('Too many attempts. Request a new code.');
+  const inputHash = await sha256Hex(inputCode.trim());
+  if (inputHash !== data.codeHash) {
+    await updateDoc(ref, { attempts: (data.attempts || 0) + 1 });
+    throw new Error('Incorrect code.');
+  }
+  const token = genToken();
+  await updateDoc(doc(db, 'members', user.uid), {
+    activeSessionToken: token,
+    sessionExpiresAt: Timestamp.fromMillis(Date.now() + SESSION_TTL_MS)
+  });
+  return token;
+}
+
+/* ── main form submit: sign in / sign up / magic link ── */
 pwForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = emailInput.value.trim();
@@ -425,38 +525,99 @@ pwForm.addEventListener('submit', async (e) => {
   setMsg('');
   try {
     if (mode === 'magic') {
-      const actionCodeSettings = {
-        url: window.location.href,
-        handleCodeInApp: true
-      };
+      const actionCodeSettings = { url: window.location.href, handleCodeInApp: true };
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
       window.localStorage.setItem(EMAIL_STORAGE_KEY, email);
       setMsg('Check your email for a sign-in link.', 'success');
+
     } else if (mode === 'signup') {
-      await createUserWithEmailAndPassword(auth, email, passwordInput.value);
+      const first = firstInput.value.trim(), last = lastInput.value.trim(), username = usernameInput.value.trim();
+      if (!first || !last || !username) throw new Error('First name, last name, and username are required.');
+      const cred = await createUserWithEmailAndPassword(auth, email, passwordInput.value);
+      const user = cred.user;
+      await updateProfile(user, { displayName: `${first} ${last}` });
+      await setDoc(doc(db, 'members', user.uid), {
+        email, username, firstName: first, lastName: last,
+        tier: 4, role: 'member', division: 'Alliance', createdAt: serverTimestamp()
+      });
+      await sendEmailVerification(user);
+      await signOut(auth);
+      showStep('verify');
+
     } else {
-      await signInWithEmailAndPassword(auth, email, passwordInput.value);
+      const cred = await signInWithEmailAndPassword(auth, email, passwordInput.value);
+      const user = cred.user;
+      await user.reload();
+      if (!user.emailVerified) {
+        await sendEmailVerification(user).catch(() => {});
+        await signOut(auth);
+        throw new Error('Please verify your email first — we just re-sent the link.');
+      }
+      await send2FACode(user);
     }
   } catch (err) {
-    setMsg(err.message.replace(/^Firebase:\s*/, ''), 'error');
+    setMsg((err.message || 'Something went wrong.').replace(/^Firebase:\s*/, ''), 'error');
   } finally {
     submitBtn.disabled = false;
   }
 });
 
+/* ── 2FA step ── */
+twofaForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const user = auth.currentUser;
+  if (!user) { twofaMsg.textContent = 'Session lost — please sign in again.'; twofaMsg.className = 'lp-msg error'; showStep('pw'); return; }
+  twofaMsg.textContent = ''; twofaMsg.className = 'lp-msg';
+  try {
+    const token = await verify2FACode(user, twofaCodeInput.value);
+    localStorage.setItem('lvo_st_' + user.uid, token);
+  } catch (err) {
+    twofaMsg.textContent = err.message; twofaMsg.className = 'lp-msg error';
+  }
+});
+twofaResendBtn.addEventListener('click', async () => {
+  const user = auth.currentUser;
+  if (user) await send2FACode(user);
+});
+twofaCancelBtn.addEventListener('click', async () => { await signOut(auth); showStep('pw'); });
+
+/* ── complete-profile step (first-time magic-link users) ── */
+profileForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const user = pendingUserForProfile || auth.currentUser;
+  if (!user) return;
+  const first = profFirst.value.trim(), last = profLast.value.trim(), username = profUsername.value.trim();
+  if (!first || !last || !username) { profileMsg.textContent = 'All fields are required.'; profileMsg.className = 'lp-msg error'; return; }
+  try {
+    await updateProfile(user, { displayName: `${first} ${last}` });
+    await setDoc(doc(db, 'members', user.uid), {
+      email: user.email, username, firstName: first, lastName: last,
+      tier: 4, role: 'member', division: 'Alliance', createdAt: serverTimestamp()
+    });
+    pendingUserForProfile = null;
+    await finishSignedIn(user);
+  } catch (err) {
+    profileMsg.textContent = (err.message || '').replace(/^Firebase:\s*/, ''); profileMsg.className = 'lp-msg error';
+  }
+});
+
 userSignOutBtn.addEventListener('click', async () => {
+  const uid = auth.currentUser?.uid;
+  if (uid) localStorage.removeItem('lvo_st_' + uid);
   await signOut(auth);
 });
 
+/* ── gate / signed-in rendering ── */
 function showGate() {
   gate.style.display = 'block';
   redirect.classList.remove('show');
   navUserBtn.classList.remove('show');
   mode = 'signin';
   renderMode();
+  showStep('pw');
 }
 
-async function showSignedIn(user) {
+async function finishSignedIn(user) {
   gate.style.display = 'none';
   redirect.classList.add('show');
   const label = user.displayName || user.email || 'Member';
@@ -464,40 +625,57 @@ async function showSignedIn(user) {
   userChipEmail.textContent = user.email || '';
   navUserBtn.classList.add('show');
 
+  const token = localStorage.getItem('lvo_st_' + user.uid) || '';
+  const dashUrl = 'https://dashboard.alliance.wearelvo.com/' + (token ? ('?st=' + encodeURIComponent(token)) : '');
+  navDashLink.href = dashUrl;
+  enterDashboardBtn.href = dashUrl;
+
   try {
-    const member = await ensureMemberRecord(user);
-    const tierLabel = member.tierLabel || 'Member';
-    document.getElementById('redirectSub').textContent =
-      `You're signed in. Tier IV · ${tierLabel} status confirmed.`;
-  } catch (err) {
-    // Non-fatal: sign-in still succeeded even if the member record write failed
-    console.error('Could not read/write member record:', err);
-  }
+    const snap = await getDoc(doc(db, 'members', user.uid));
+    const tierLabel = snap.exists() ? (snap.data().tierLabel || 'Member') : 'Member';
+    document.getElementById('redirectSub').textContent = `You're signed in. ${tierLabel} status confirmed.`;
+  } catch (err) { console.error('Could not read member record:', err); }
 }
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    showSignedIn(user);
-  } else {
-    showGate();
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { showGate(); return; }
+
+  // Password-signup users are signed out until they verify + finish 2FA,
+  // so if we land here signed in, it's either a fresh magic-link user
+  // or someone who already completed 2FA in this tab.
+  await user.reload();
+  const snap = await getDoc(doc(db, 'members', user.uid));
+
+  if (!snap.exists()) {
+    // First time via magic link — collect their profile before granting access.
+    pendingUserForProfile = user;
+    gate.style.display = 'block';
+    redirect.classList.remove('show');
+    showStep('profile');
+    return;
   }
+
+  const hasToken = !!localStorage.getItem('lvo_st_' + user.uid);
+  if (twofaForm.style.display === 'flex' && !hasToken) return; // mid 2FA, don't override
+
+  await finishSignedIn(user);
 });
 
-// Complete email-link sign-in if the page was loaded from that link
+/* Complete email-link sign-in if the page was loaded from that link */
 if (isSignInWithEmailLink(auth, window.location.href)) {
   let email = window.localStorage.getItem(EMAIL_STORAGE_KEY);
-  if (!email) {
-    email = window.prompt('Please confirm your email to complete sign-in');
-  }
+  if (!email) email = window.prompt('Please confirm your email to complete sign-in');
   if (email) {
     signInWithEmailLink(auth, email, window.location.href)
       .then(() => {
         window.localStorage.removeItem(EMAIL_STORAGE_KEY);
         window.history.replaceState({}, document.title, window.location.pathname);
       })
-      .catch((err) => setMsg(err.message.replace(/^Firebase:\s*/, ''), 'error'));
+      .catch((err) => setMsg((err.message || '').replace(/^Firebase:\s*/, ''), 'error'));
   }
 }
+
+renderMode();
 </script>
 </body>
 </html>
