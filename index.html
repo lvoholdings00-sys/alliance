@@ -8,13 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_live_Y2xlcmsuYWxsaWFuY2Uud2VhcmVsdm8uY29tJA"
-    src="https://clerk.alliance.wearelvo.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
-    type="text/javascript"
-  ></script>
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     :root{
@@ -40,7 +33,10 @@
     #navUserBtn.show{display:flex}
     .nav-dash-link{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.3em;color:var(--accent);text-decoration:none;text-transform:uppercase;border:.5px solid rgba(127,119,221,.35);padding:.35rem .75rem;transition:background .25s,border-color .25s}
     .nav-dash-link:hover{background:rgba(127,119,221,.1);border-color:var(--accent)}
-    #clerkNavBtn{display:flex;align-items:center}
+    .user-chip{display:flex;align-items:center;gap:.8rem}
+    .user-chip-email{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;color:var(--chrome);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .user-signout{background:none;border:.5px solid rgba(127,119,221,.3);color:var(--dim);font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;padding:.4rem .75rem;cursor:pointer;text-transform:uppercase;transition:color .25s,border-color .25s}
+    .user-signout:hover{color:var(--accent);border-color:var(--accent)}
 
     .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 4rem;position:relative}
     .hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(600px,90vw);height:min(600px,90vw);border-radius:50%;background:radial-gradient(circle,rgba(127,119,221,0.07) 0%,transparent 70%);pointer-events:none}
@@ -79,8 +75,21 @@
     #portalGate::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
     .gate-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.8rem}
     .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.7}
-    #clerkSignIn{display:flex;justify-content:center;width:100%}
-    #clerkSignIn > *{width:100% !important;max-width:100% !important}
+    #authForm{display:flex;justify-content:center;width:100%}
+    .lp-form{display:flex;flex-direction:column;gap:1.3rem;width:100%;text-align:left}
+    .lp-field{display:flex;flex-direction:column;gap:.5rem}
+    .lp-field label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.12em;color:var(--dim);text-transform:uppercase}
+    .lp-field input{background:transparent;border:.5px solid rgba(127,119,221,.35);border-radius:0;color:var(--white);font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;letter-spacing:.04em;padding:.8rem 1rem;outline:none;transition:border-color .25s}
+    .lp-field input:focus{border-color:var(--accent)}
+    .lp-submit{background:transparent;border:.5px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.3em;padding:1rem 2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
+    .lp-submit:hover{background:var(--accent);color:var(--bg)}
+    .lp-submit:disabled{opacity:.4;cursor:default}
+    .lp-toggle-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+    .lp-link{background:none;border:none;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0}
+    .lp-link:hover{color:var(--accent)}
+    .lp-msg{font-size:.85rem;font-style:italic;color:var(--dim);line-height:1.6;min-height:1.2em}
+    .lp-msg.error{color:var(--red-hi)}
+    .lp-msg.success{color:var(--accent)}
 
     /* Signed-in redirect card */
     #portalRedirect{display:none;border:.5px solid rgba(127,119,221,.25);padding:3.5rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
@@ -106,8 +115,6 @@
     /* SCRAMBLE CHARS — word-wrapper keeps line-wraps at word boundaries only */
     .scramble-word{display:inline-block;white-space:nowrap}
     .scramble-char{display:inline-block;will-change:contents}
-
-    .cl-formFieldInput,[data-clerk-input],input.cl-formFieldInput{font-family:'Cormorant Garamond',Georgia,serif !important;font-size:1rem !important;letter-spacing:.04em !important;text-transform:none !important;font-variant:normal !important}
 
     @media(max-width:600px){
       nav{padding:1.2rem}.nav-tag{display:none}
@@ -135,7 +142,10 @@
       <span class="nav-tag" data-scramble> Partnership &amp; Capital Division</span>
       <div id="navUserBtn">
         <a class="nav-dash-link" href="https://dashboard.alliance.wearelvo.com/">→ Dashboard</a>
-        <div id="clerkNavBtn"></div>
+        <div id="userChip" class="user-chip">
+          <span class="user-chip-email" id="userChipEmail"></span>
+          <button class="user-signout" id="userSignOutBtn" type="button">Sign Out</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -172,14 +182,31 @@
     <div id="portalGate">
       <p class="gate-title" data-scramble>Alliance Portal Access</p>
       <p class="gate-sub" data-scramble-block>Sign in to access your Alliance member dashboard.<br/>New members are assigned Tier IV upon first sign-in.</p>
-      <div id="clerkSignIn"></div>
+      <div id="authForm">
+        <form class="lp-form" id="pwForm">
+          <div class="lp-field">
+            <label for="authEmail">Email</label>
+            <input type="email" id="authEmail" autocomplete="email" required/>
+          </div>
+          <div class="lp-field" id="authPasswordField">
+            <label for="authPassword">Password</label>
+            <input type="password" id="authPassword" autocomplete="current-password" minlength="6"/>
+          </div>
+          <button type="submit" class="lp-submit" id="authSubmitBtn">Sign In</button>
+          <div class="lp-toggle-row">
+            <button type="button" class="lp-link" id="authModeToggle">Create an account instead</button>
+            <button type="button" class="lp-link" id="authMagicToggle">Sign in with email link</button>
+          </div>
+          <p class="lp-msg" id="authMsg"></p>
+        </form>
+      </div>
     </div>
 
     <!-- SIGNED IN: redirect card -->
     <div id="portalRedirect">
       <p class="redirect-title" data-scramble>Alliance Portal</p>
       <p class="redirect-name" id="redirectName">—</p>
-      <p class="redirect-sub" data-scramble>You're signed in. Your dashboard is waiting.</p>
+      <p class="redirect-sub" id="redirectSub">You're signed in. Your dashboard is waiting.</p>
       <a class="redirect-btn" href="https://dashboard.alliance.wearelvo.com/">Enter Dashboard →</a>
       <div class="redirect-rule"></div>
     </div>
@@ -286,71 +313,191 @@ document.addEventListener('pointermove', (e) => {
   });
 });
 
-const clerkAppearance = {
-  variables: {
-    colorBackground: '#050505', colorText: '#F0EEEC', colorPrimary: '#7F77DD',
-    colorInputBackground: 'transparent', colorInputText: '#F0EEEC',
-    borderRadius: '0px', fontFamily: "'Cormorant Garamond',Georgia,serif"
-  },
-  elements: {
-    card: { background: 'transparent', border: '.5px solid rgba(127,119,221,.25)', boxShadow: 'none', borderRadius: '0' },
-    headerTitle: { fontFamily: "'Cinzel',serif", letterSpacing: '.2em', color: '#C8C8D0' },
-    headerSubtitle: { color: '#888880', fontStyle: 'italic' },
-    formFieldLabel: { color: '#888880', fontFamily: "'Cinzel',serif", letterSpacing: '.12em', fontSize: '.7rem' },
-    formFieldInput: { background: 'transparent', border: '.5px solid rgba(127,119,221,.35)', borderRadius: '0', color: '#F0EEEC', fontFamily: "Georgia,'Times New Roman',serif", fontSize: '1rem', letterSpacing: '.04em', textTransform: 'none', fontVariant: 'normal' },
-    formButtonPrimary: { background: 'transparent', border: '.5px solid #7F77DD', borderRadius: '0', color: '#7F77DD', fontFamily: "'Cinzel',serif", letterSpacing: '.3em', textTransform: 'uppercase', boxShadow: 'none' },
-    footerActionLink: { color: '#7F77DD' },
-    dividerLine: { background: 'rgba(127,119,221,.2)' },
-    dividerText: { color: '#888880' },
-    socialButtonsIconButton: { background: 'transparent', border: '.5px solid rgba(127,119,221,.25)', borderRadius: '0' },
-    avatarBox: { border: '.5px solid rgba(127,119,221,.4)', borderRadius: '0' }
-  }
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyB5m5ah1olAjus4r7M14flO1BxoWCfO4oU",
+  authDomain: "alliance-4afdc.firebaseapp.com",
+  projectId: "alliance-4afdc",
+  storageBucket: "alliance-4afdc.firebasestorage.app",
+  messagingSenderId: "713313535350",
+  appId: "1:713313535350:web:18ab3f5de64604e9f42657"
 };
 
-window.addEventListener('load', async () => {
-  await Clerk.load();
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
 
-  const gate        = document.getElementById('portalGate');
-  const redirect    = document.getElementById('portalRedirect');
-  const navUserBtn  = document.getElementById('navUserBtn');
-  const clerkNavBtn = document.getElementById('clerkNavBtn');
-  const signInEl    = document.getElementById('clerkSignIn');
+// Ensures a `members/{uid}` doc exists, assigning Tier IV on first sign-in.
+// Safe to call every time a user is detected signed-in — it only writes
+// once, on the first sign-in, and never overwrites an existing doc.
+async function ensureMemberRecord(user) {
+  const memberRef = doc(db, 'members', user.uid);
+  const snap = await getDoc(memberRef);
+  if (!snap.exists()) {
+    await setDoc(memberRef, {
+      email: user.email || null,
+      tier: 4,
+      tierLabel: 'Member',
+      createdAt: serverTimestamp()
+    });
+  }
+  return snap.exists() ? snap.data() : { tier: 4, tierLabel: 'Member' };
+}
 
-  let signInMounted = false;
+const EMAIL_STORAGE_KEY = 'lvoAllianceEmailForSignIn';
 
-  function showGate() {
-    gate.style.display = 'block';
-    redirect.classList.remove('show');
-    navUserBtn.classList.remove('show');
-    if (!signInMounted) {
-      Clerk.mountSignIn(signInEl, { appearance: clerkAppearance, routing: 'virtual' });
-      signInMounted = true;
+const gate            = document.getElementById('portalGate');
+const redirect        = document.getElementById('portalRedirect');
+const navUserBtn      = document.getElementById('navUserBtn');
+const userChipEmail   = document.getElementById('userChipEmail');
+const userSignOutBtn  = document.getElementById('userSignOutBtn');
+
+const pwForm          = document.getElementById('pwForm');
+const emailInput      = document.getElementById('authEmail');
+const passwordField   = document.getElementById('authPasswordField');
+const passwordInput   = document.getElementById('authPassword');
+const submitBtn       = document.getElementById('authSubmitBtn');
+const modeToggle       = document.getElementById('authModeToggle');
+const magicToggle       = document.getElementById('authMagicToggle');
+const authMsg         = document.getElementById('authMsg');
+
+let mode = 'signin'; // 'signin' | 'signup' | 'magic'
+
+function setMsg(text, type) {
+  authMsg.textContent = text || '';
+  authMsg.className = 'lp-msg' + (type ? ' ' + type : '');
+}
+
+function renderMode() {
+  setMsg('');
+  if (mode === 'magic') {
+    passwordField.style.display = 'none';
+    passwordInput.required = false;
+    submitBtn.textContent = 'Send Sign-In Link';
+    modeToggle.style.display = 'none';
+    magicToggle.textContent = 'Sign in with password instead';
+  } else {
+    passwordField.style.display = 'flex';
+    passwordInput.required = true;
+    submitBtn.textContent = mode === 'signup' ? 'Create Account' : 'Sign In';
+    modeToggle.style.display = 'inline';
+    modeToggle.textContent = mode === 'signup' ? 'Sign in instead' : 'Create an account instead';
+    magicToggle.textContent = 'Sign in with email link';
+  }
+}
+
+modeToggle.addEventListener('click', () => {
+  mode = mode === 'signup' ? 'signin' : 'signup';
+  renderMode();
+});
+
+magicToggle.addEventListener('click', () => {
+  mode = mode === 'magic' ? 'signin' : 'magic';
+  renderMode();
+});
+
+pwForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = emailInput.value.trim();
+  submitBtn.disabled = true;
+  setMsg('');
+  try {
+    if (mode === 'magic') {
+      const actionCodeSettings = {
+        url: window.location.href,
+        handleCodeInApp: true
+      };
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+      window.localStorage.setItem(EMAIL_STORAGE_KEY, email);
+      setMsg('Check your email for a sign-in link.', 'success');
+    } else if (mode === 'signup') {
+      await createUserWithEmailAndPassword(auth, email, passwordInput.value);
+    } else {
+      await signInWithEmailAndPassword(auth, email, passwordInput.value);
     }
+  } catch (err) {
+    setMsg(err.message.replace(/^Firebase:\s*/, ''), 'error');
+  } finally {
+    submitBtn.disabled = false;
   }
+});
 
-  function showSignedIn(user) {
-    gate.style.display = 'none';
-    redirect.classList.add('show');
-    const firstName = user.firstName || 'Member';
-    document.getElementById('redirectName').textContent = firstName;
-    navUserBtn.classList.add('show');
-    Clerk.mountUserButton(clerkNavBtn, { appearance: clerkAppearance });
+userSignOutBtn.addEventListener('click', async () => {
+  await signOut(auth);
+});
+
+function showGate() {
+  gate.style.display = 'block';
+  redirect.classList.remove('show');
+  navUserBtn.classList.remove('show');
+  mode = 'signin';
+  renderMode();
+}
+
+async function showSignedIn(user) {
+  gate.style.display = 'none';
+  redirect.classList.add('show');
+  const label = user.displayName || user.email || 'Member';
+  document.getElementById('redirectName').textContent = label;
+  userChipEmail.textContent = user.email || '';
+  navUserBtn.classList.add('show');
+
+  try {
+    const member = await ensureMemberRecord(user);
+    const tierLabel = member.tierLabel || 'Member';
+    document.getElementById('redirectSub').textContent =
+      `You're signed in. Tier IV · ${tierLabel} status confirmed.`;
+  } catch (err) {
+    // Non-fatal: sign-in still succeeded even if the member record write failed
+    console.error('Could not read/write member record:', err);
   }
+}
 
-  if (Clerk.user) {
-    showSignedIn(Clerk.user);
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    showSignedIn(user);
   } else {
     showGate();
   }
-
-  Clerk.addListener(({ user }) => {
-    if (user) {
-      showSignedIn(user);
-    } else {
-      showGate();
-    }
-  });
 });
+
+// Complete email-link sign-in if the page was loaded from that link
+if (isSignInWithEmailLink(auth, window.location.href)) {
+  let email = window.localStorage.getItem(EMAIL_STORAGE_KEY);
+  if (!email) {
+    email = window.prompt('Please confirm your email to complete sign-in');
+  }
+  if (email) {
+    signInWithEmailLink(auth, email, window.location.href)
+      .then(() => {
+        window.localStorage.removeItem(EMAIL_STORAGE_KEY);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      })
+      .catch((err) => setMsg(err.message.replace(/^Firebase:\s*/, ''), 'error'));
+  }
+}
 </script>
 </body>
 </html>
