@@ -74,7 +74,7 @@
     #portalGate{border:.5px solid rgba(127,119,221,.25);padding:4rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
     #portalGate::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
     .gate-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.8rem}
-    .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.7}
+    .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.75}
     #authMount{display:flex;justify-content:center;width:100%}
 
     #portalRedirect{display:none;border:.5px solid rgba(127,119,221,.25);padding:3.5rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
@@ -87,9 +87,13 @@
     .redirect-btn:hover{background:var(--accent);color:var(--bg)}
     .redirect-rule{width:1px;height:32px;background:linear-gradient(to bottom,transparent,rgba(127,119,221,.3),transparent);margin:1.8rem auto 0}
 
-    footer{border-top:.5px solid rgba(127,119,221,.15);padding:2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;margin-top:auto}
+    footer{border-top:.5px solid rgba(127,119,221,.15);padding:2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.2rem;margin-top:auto}
     .footer-back{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.3em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .3s}
     .footer-back:hover{color:var(--accent)}
+    .footer-links{display:flex;align-items:center;gap:.9rem;font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.25em;text-transform:uppercase}
+    .footer-links a{color:var(--dim);text-decoration:none;transition:color .3s}
+    .footer-links a:hover{color:var(--accent)}
+    .footer-links span{color:rgba(136,136,128,.4)}
     .footer-copy{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.15em;color:rgba(136,136,128,.35)}
 
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
@@ -123,7 +127,7 @@
       <a class="nav-mark" href="#">LVO Alliance</a>
     </div>
     <div class="nav-right">
-      <span class="nav-tag" data-scramble> Partnership &amp; Capital Division</span>
+      <span class="nav-tag" data-scramble>Partnership &amp; Capital Division</span>
       <div id="navUserBtn">
         <a class="nav-dash-link" id="navDashLink" href="https://dashboard.alliance.wearelvo.com/">→ Dashboard</a>
         <div id="userChip" class="user-chip">
@@ -165,14 +169,14 @@
 
     <div id="portalGate">
       <p class="gate-title" data-scramble id="gateTitle">Alliance Portal Access</p>
-      <p class="gate-sub" id="gateSub">Sign up or sign in to access your Alliance member dashboard.<br/>New members are assigned Tier IV upon first sign-in.</p>
+      <p class="gate-sub" id="gateSub">Sign in or request access below.<br/>New members are assigned Tier IV until reviewed by LVO Administration.</p>
       <div id="authMount"></div>
     </div>
 
     <div id="portalRedirect">
       <p class="redirect-title" data-scramble>Alliance Portal</p>
       <p class="redirect-name" id="redirectName">—</p>
-      <p class="redirect-sub" id="redirectSub">You're signed in. Your dashboard is waiting.</p>
+      <p class="redirect-sub" id="redirectSub">You're signed in. Redirecting to your dashboard…</p>
       <a class="redirect-btn" id="enterDashboardBtn" href="https://dashboard.alliance.wearelvo.com/">Enter Dashboard →</a>
       <div class="redirect-rule"></div>
     </div>
@@ -181,6 +185,11 @@
 
   <footer>
     <a class="footer-back" href="https://wearelvo.com" data-scramble>← wearelvo.com</a>
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <span>·</span>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
     <span class="footer-copy">&copy; 2026 LVO Holdings · All Rights Reserved</span>
   </footer>
 </div>
@@ -211,24 +220,21 @@ function buildWordSpan(word) {
   return wordSpan;
 }
 function splitTextNode(textNode) {
-  const text = textNode.textContent;
   const frag = document.createDocumentFragment();
-  const parts = text.split(/(\s+)/);
-  parts.forEach(part => {
-    if (part === '') return;
-    if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
-    else frag.appendChild(buildWordSpan(part));
+  textNode.textContent.split(/(\s+)/).forEach(part => {
+    if (!part) return;
+    frag.appendChild(/^\s+$/.test(part) ? document.createTextNode(part) : buildWordSpan(part));
   });
   return frag;
 }
-function splitElement(el) {
+document.querySelectorAll('[data-scramble], [data-scramble-block]').forEach(el => {
   const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
   const nodes = [];
   let n;
   while ((n = walker.nextNode())) nodes.push(n);
-  nodes.forEach(tn => { if (tn.textContent.trim()) tn.parentNode.replaceChild(splitTextNode(tn), tn); });
-}
-document.querySelectorAll('[data-scramble], [data-scramble-block]').forEach(el => splitElement(el));
+  nodes.forEach(tn => tn.textContent.trim() && tn.parentNode.replaceChild(splitTextNode(tn), tn));
+});
+
 const activeTimers = new Map();
 function scrambleChar(span) {
   const orig = span.dataset.orig;
@@ -249,13 +255,8 @@ document.addEventListener('pointermove', (e) => {
     raf = null;
     document.querySelectorAll('.scramble-char').forEach(span => {
       const rect = span.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-      if (dist < SCRAMBLE_RADIUS) {
-        const proximity = 1 - dist / SCRAMBLE_RADIUS;
-        if (Math.random() < proximity * 0.35) scrambleChar(span);
-      }
+      const dist = Math.hypot(e.clientX - (rect.left + rect.width / 2), e.clientY - (rect.top + rect.height / 2));
+      if (dist < SCRAMBLE_RADIUS && Math.random() < (1 - dist / SCRAMBLE_RADIUS) * 0.35) scrambleChar(span);
     });
   });
 });
@@ -273,13 +274,20 @@ document.addEventListener('pointermove', (e) => {
   const userChipAvatar = document.getElementById('userChipAvatar');
   const userSignOutBtn = document.getElementById('userSignOutBtn');
 
+  let autoRedirectTimer = null;
+
+  function dashUrlWithToken() {
+    return DASHBOARD_URL + '?lvo_token=' + encodeURIComponent(LVOAuth.getToken());
+  }
+
   function showGate() {
+    if (autoRedirectTimer) { clearTimeout(autoRedirectTimer); autoRedirectTimer = null; }
     gate.style.display = 'block';
     redirect.classList.remove('show');
     navUserBtn.classList.remove('show');
     LVOAuthWidget.mount(document.getElementById('authMount'), {
       division: 'Alliance',
-      onAuthenticated: (user) => showSignedIn(user)
+      onAuthenticated: showSignedIn,
     });
   }
 
@@ -287,16 +295,24 @@ document.addEventListener('pointermove', (e) => {
     gate.style.display = 'none';
     redirect.classList.add('show');
     navUserBtn.classList.add('show');
+
     document.getElementById('redirectName').textContent = user.firstName || 'Member';
     userChipEmail.textContent = user.email || '';
     if (user.avatar) { userChipAvatar.src = user.avatar; userChipAvatar.style.display = 'block'; }
     else { userChipAvatar.style.display = 'none'; }
-    const dashUrl = DASHBOARD_URL + '?lvo_token=' + encodeURIComponent(LVOAuth.getToken());
+
+    const dashUrl = dashUrlWithToken();
     document.getElementById('navDashLink').href = dashUrl;
     document.getElementById('enterDashboardBtn').href = dashUrl;
+
+    if (autoRedirectTimer) clearTimeout(autoRedirectTimer);
+    autoRedirectTimer = setTimeout(() => { window.location.href = dashUrl; }, 1400);
   }
 
-  userSignOutBtn.addEventListener('click', async () => { await LVOAuth.logout(); showGate(); });
+  userSignOutBtn.addEventListener('click', async () => {
+    await LVOAuth.logout();
+    showGate();
+  });
 
   (async () => {
     const user = await LVOAuth.session();
