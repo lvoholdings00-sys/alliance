@@ -87,6 +87,11 @@
     .redirect-btn:hover{background:var(--accent);color:var(--bg)}
     .redirect-rule{width:1px;height:32px;background:linear-gradient(to bottom,transparent,rgba(127,119,221,.3),transparent);margin:1.8rem auto 0}
 
+    .request-note{max-width:480px;margin:1.6rem auto 0;text-align:center}
+    .request-note p{font-size:.82rem;font-weight:300;font-style:italic;color:var(--dim);line-height:1.8}
+    .request-note a{color:var(--accent);text-decoration:none;border-bottom:.5px solid rgba(127,119,221,.35);transition:border-color .25s}
+    .request-note a:hover{border-color:var(--accent)}
+
     footer{border-top:.5px solid rgba(127,119,221,.15);padding:2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.2rem;margin-top:auto}
     .footer-back{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.3em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .3s}
     .footer-back:hover{color:var(--accent)}
@@ -169,8 +174,12 @@
 
     <div id="portalGate">
       <p class="gate-title" data-scramble id="gateTitle">Alliance Portal Access</p>
-      <p class="gate-sub" id="gateSub">Sign in or request access below.<br/>New members are assigned Tier IV until reviewed by LVO Administration.</p>
+      <p class="gate-sub" id="gateSub">This portal is for accepted members only.<br/>Sign in below with your credentials.</p>
       <div id="authMount"></div>
+    </div>
+
+    <div class="request-note">
+      <p>Not yet a member? Access to LVO Alliance is by invitation and review only. To request consideration, email <a href="mailto:join@wearelvo.com?subject=Requesting%20Access%20%E2%80%94%20Alliance">join@wearelvo.com</a>.</p>
     </div>
 
     <div id="portalRedirect">
