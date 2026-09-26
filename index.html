@@ -4,6 +4,9 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LVO Alliance · Partnerships</title>
+  <meta name="description" content="LVO Alliance - Partnership & Capital Division. Strategic capital, joint ventures, and deal structuring."/>
+  <meta property="og:title" content="LVO Alliance · Partnerships"/>
+  <meta property="og:description" content="LVO Alliance - Partnership & Capital Division. Strategic capital, joint ventures, and deal structuring."/>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -14,14 +17,21 @@
       --red:#8B0000;--red-hi:#CC2020;
       --chrome:#C8C8D0;--white:#F0EEEC;
       --dim:#888880;--bg:#000000;
-      --accent:#7F77DD;--gold:#C8A96E;
+      --accent:#A359EC;--gold:#C8A96E;
     }
     html{scroll-behavior:smooth}
     body{background:var(--bg);color:var(--white);font-family:'Cormorant Garamond',Georgia,serif;overflow-x:hidden;cursor:default}
     body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.03;pointer-events:none;z-index:9999}
     .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
 
-    nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(5,5,5,0.97) 0%,transparent 100%)}
+    .div-bar{height:28px;background:#050505;border-bottom:.5px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.25em;text-transform:uppercase;position:fixed;top:0;left:0;right:0;z-index:210}
+    .div-links{display:flex;align-items:center;gap:1.5rem}
+    .div-link{color:var(--dim);text-decoration:none;transition:color .2s}
+    .div-link:hover{color:var(--white)}
+    .div-link.active{color:var(--accent);font-weight:600}
+    .div-brand{color:var(--dim);letter-spacing:.3em}
+
+    nav{position:fixed;top:28px;left:0;right:0;z-index:200;padding:1.4rem 4rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(5,5,5,0.97) 0%,transparent 100%)}
     .nav-left{display:flex;flex-direction:column;gap:0.2rem}
     .nav-parent{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.35em;color:var(--red-hi);text-decoration:none;text-transform:uppercase;transition:color .3s}
     .nav-parent:hover{color:var(--chrome)}
@@ -31,16 +41,16 @@
 
     #navUserBtn{display:none;align-items:center;gap:1rem}
     #navUserBtn.show{display:flex}
-    .nav-dash-link{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.3em;color:var(--accent);text-decoration:none;text-transform:uppercase;border:.5px solid rgba(127,119,221,.35);padding:.35rem .75rem;transition:background .25s,border-color .25s}
-    .nav-dash-link:hover{background:rgba(127,119,221,.1);border-color:var(--accent)}
+    .nav-dash-link{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.3em;color:var(--accent);text-decoration:none;text-transform:uppercase;border:.5px solid rgba(163,89,236,.35);padding:.35rem .75rem;transition:background .25s,border-color .25s}
+    .nav-dash-link:hover{background:rgba(163,89,236,.1);border-color:var(--accent)}
     .user-chip{display:flex;align-items:center;gap:.8rem}
-    .user-chip-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;border:.5px solid rgba(127,119,221,.4)}
+    .user-chip-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;border:.5px solid rgba(163,89,236,.4)}
     .user-chip-email{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;color:var(--chrome);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .user-signout{background:none;border:.5px solid rgba(127,119,221,.3);color:var(--dim);font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;padding:.4rem .75rem;cursor:pointer;text-transform:uppercase;transition:color .25s,border-color .25s}
+    .user-signout{background:none;border:.5px solid rgba(163,89,236,.3);color:var(--dim);font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;padding:.4rem .75rem;cursor:pointer;text-transform:uppercase;transition:color .25s,border-color .25s}
     .user-signout:hover{color:var(--accent);border-color:var(--accent)}
 
     .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 4rem;position:relative}
-    .hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(600px,90vw);height:min(600px,90vw);border-radius:50%;background:radial-gradient(circle,rgba(127,119,221,0.07) 0%,transparent 70%);pointer-events:none}
+    .hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(600px,90vw);height:min(600px,90vw);border-radius:50%;background:radial-gradient(circle,rgba(163,89,236,0.08) 0%,transparent 70%);pointer-events:none}
     .hero-label{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.5em;color:var(--red-hi);text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .3s forwards}
     .hero-title{font-family:'Cinzel',serif;font-size:clamp(2.2rem,8vw,5rem);font-weight:900;letter-spacing:.2em;color:var(--accent);line-height:1;margin-bottom:.5rem;opacity:0;animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .5s forwards}
     .hero-sub{font-family:'Cinzel',serif;font-size:clamp(.48rem,1.5vw,.65rem);letter-spacing:.4em;color:var(--dim);text-transform:uppercase;margin-bottom:3rem;opacity:0;animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .7s forwards}
@@ -52,18 +62,18 @@
     .section-divider span{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.4em;color:var(--accent);white-space:nowrap}
 
     .pillars{padding:0 2rem;max-width:1100px;margin:0 auto;width:100%}
-    .pillars-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:.5px solid rgba(127,119,221,.2)}
-    .pillar{padding:3rem 2rem;border-right:.5px solid rgba(127,119,221,.12);position:relative;overflow:hidden;transition:background .4s}
+    .pillars-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:.5px solid rgba(163,89,236,.2)}
+    .pillar{padding:3rem 2rem;border-right:.5px solid rgba(163,89,236,.12);position:relative;overflow:hidden;transition:background .4s}
     .pillar:last-child{border-right:none}
     .pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent);transform:scaleX(0);transition:transform .5s cubic-bezier(.16,1,.3,1)}
-    .pillar:hover{background:rgba(127,119,221,.03)}
+    .pillar:hover{background:rgba(163,89,236,.04)}
     .pillar:hover::before{transform:scaleX(1)}
     .pillar-icon{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;color:var(--accent);margin-bottom:1.5rem;display:block;opacity:.7}
     .pillar-title{font-family:'Cinzel',serif;font-size:.88rem;font-weight:600;letter-spacing:.18em;color:var(--chrome);margin-bottom:1rem;text-transform:uppercase}
     .pillar-text{font-size:.92rem;font-weight:300;line-height:1.9;color:var(--dim);font-style:italic}
 
     .tiers{max-width:800px;margin:0 auto;padding:0 2rem 7rem;width:100%}
-    .tier{display:flex;align-items:flex-start;gap:2rem;padding:2.5rem 0;border-bottom:.5px solid rgba(127,119,221,.1)}
+    .tier{display:flex;align-items:flex-start;gap:2rem;padding:2.5rem 0;border-bottom:.5px solid rgba(163,89,236,.1)}
     .tier:last-child{border-bottom:none}
     .tier-num{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;color:var(--accent);min-width:48px;padding-top:.2rem}
     .tier-title{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.2em;color:var(--chrome);margin-bottom:.6rem;text-transform:uppercase}
@@ -71,13 +81,13 @@
 
     .portal-wrap{max-width:960px;margin:0 auto;padding:0 2rem 8rem;width:100%}
 
-    #portalGate{border:.5px solid rgba(127,119,221,.25);padding:4rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
+    #portalGate{border:.5px solid rgba(163,89,236,.25);padding:4rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
     #portalGate::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
     .gate-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.8rem}
     .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.75}
     #authMount{display:flex;justify-content:center;width:100%}
 
-    #portalRedirect{display:none;border:.5px solid rgba(127,119,221,.25);padding:3.5rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
+    #portalRedirect{display:none;border:.5px solid rgba(163,89,236,.25);padding:3.5rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
     #portalRedirect::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
     #portalRedirect.show{display:block}
     .redirect-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.6rem}
@@ -85,14 +95,14 @@
     .redirect-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2rem;line-height:1.7}
     .redirect-btn{display:inline-block;background:transparent;border:.5px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.38em;padding:1rem 2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s;text-decoration:none}
     .redirect-btn:hover{background:var(--accent);color:var(--bg)}
-    .redirect-rule{width:1px;height:32px;background:linear-gradient(to bottom,transparent,rgba(127,119,221,.3),transparent);margin:1.8rem auto 0}
+    .redirect-rule{width:1px;height:32px;background:linear-gradient(to bottom,transparent,rgba(163,89,236,.3),transparent);margin:1.8rem auto 0}
 
     .request-note{max-width:420px;margin:2rem auto 0;text-align:center}
     .request-note p{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);line-height:1.85}
-    .request-note a{color:var(--accent);text-decoration:none;border-bottom:.5px solid rgba(127,119,221,.35);transition:border-color .25s;white-space:nowrap}
+    .request-note a{color:var(--accent);text-decoration:none;border-bottom:.5px solid rgba(163,89,236,.35);transition:border-color .25s;white-space:nowrap}
     .request-note a:hover{border-color:var(--accent)}
 
-    footer{border-top:.5px solid rgba(127,119,221,.15);padding:2.5rem 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;margin-top:auto;text-align:center}
+    footer{border-top:.5px solid rgba(163,89,236,.15);padding:2.5rem 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;margin-top:auto;text-align:center}
     .footer-back{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.3em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .3s}
     .footer-back:hover{color:var(--accent)}
     .footer-links{display:flex;align-items:center;justify-content:center;gap:.9rem;font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.25em;text-transform:uppercase}
@@ -112,19 +122,30 @@
     @media(max-width:600px){
       nav{padding:1.2rem}.nav-tag{display:none}
       .pillars{padding:0 1.2rem}.pillars-grid{grid-template-columns:1fr}
-      .pillar{border-right:none;border-bottom:.5px solid rgba(127,119,221,.12)}.pillar:last-child{border-bottom:none}
+      .pillar{border-right:none;border-bottom:.5px solid rgba(163,89,236,.12)}.pillar:last-child{border-bottom:none}
       .tiers{padding:0 1.2rem 5rem}.tier{gap:1.2rem}
       #portalGate,#portalRedirect{max-width:100%;padding:2rem 1.2rem;border-left:none;border-right:none}
       footer{flex-direction:column;align-items:center;text-align:center;padding:2rem 1.2rem}
     }
     @media(min-width:601px) and (max-width:900px){
       .pillars-grid{grid-template-columns:1fr}
-      .pillar{border-right:none;border-bottom:.5px solid rgba(127,119,221,.12)}.pillar:last-child{border-bottom:none}
+      .pillar{border-right:none;border-bottom:.5px solid rgba(163,89,236,.12)}.pillar:last-child{border-bottom:none}
     }
   </style>
 </head>
 <body>
 <div class="page">
+
+  <!-- Divisions Switcher Bar -->
+  <div class="div-bar">
+    <span class="div-brand">LVO Holdings</span>
+    <div class="div-links">
+      <a href="/ops" class="div-link">Division 01 · Ops (GRO EHR)</a>
+      <a href="/vindex" class="div-link">Division 02 · Vindex</a>
+      <a href="/" class="div-link active">Division 03 · Alliance</a>
+      <a href="/download" class="div-link" style="color:var(--accent);font-weight:600" download>⬇ Download Files (.zip)</a>
+    </div>
+  </div>
 
   <nav>
     <div class="nav-left">
@@ -134,7 +155,7 @@
     <div class="nav-right">
       <span class="nav-tag" data-scramble>Partnership &amp; Capital Division</span>
       <div id="navUserBtn">
-        <a class="nav-dash-link" id="navDashLink" href="https://dashboard.alliance.wearelvo.com/">→ Dashboard</a>
+        <a class="nav-dash-link" id="navDashLink" href="/dashboard">→ Dashboard</a>
         <div id="userChip" class="user-chip">
           <img class="user-chip-avatar" id="userChipAvatar" style="display:none"/>
           <span class="user-chip-email" id="userChipEmail"></span>
@@ -186,7 +207,7 @@
       <p class="redirect-title" data-scramble>Alliance Portal</p>
       <p class="redirect-name" id="redirectName">—</p>
       <p class="redirect-sub" id="redirectSub">You're signed in. Redirecting to your dashboard…</p>
-      <a class="redirect-btn" id="enterDashboardBtn" href="https://dashboard.alliance.wearelvo.com/">Enter Dashboard →</a>
+      <a class="redirect-btn" id="enterDashboardBtn" href="/dashboard">Enter Dashboard →</a>
       <div class="redirect-rule"></div>
     </div>
 
@@ -276,7 +297,7 @@ document.addEventListener('pointermove', (e) => {
 <script src="assets/auth-widget.js"></script>
 <script>
 (function () {
-  const DASHBOARD_URL = 'https://dashboard.alliance.wearelvo.com/';
+  const DASHBOARD_URL = '/dashboard';
   const gate = document.getElementById('portalGate');
   const redirect = document.getElementById('portalRedirect');
   const navUserBtn = document.getElementById('navUserBtn');
