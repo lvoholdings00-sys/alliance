@@ -307,7 +307,7 @@ document.addEventListener('pointermove', (e) => {
   let autoRedirectTimer = null;
 
   function dashUrlWithToken() {
-    return DASHBOARD_URL + '?lvo_token=' + encodeURIComponent(LVOAuth.getToken());
+    return DASHBOARD_URL + '#lvo_token=' + encodeURIComponent(LVOAuth.getToken());
   }
 
   function showGate() {
